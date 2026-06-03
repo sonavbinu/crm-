@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Navbar from "../../../Components/Navbar";
 
 const Employees = () => {
   const [name, setName] = useState("");
@@ -87,6 +88,7 @@ const Employees = () => {
 
   return (
     <div>
+      <Navbar />
       <h1 className="text-4xl  font-bold p-4 flex text-center ">
         Employee Details
       </h1>
@@ -148,6 +150,11 @@ const Employees = () => {
                 hover:bg-slate-500"
                 onClick={() => {
                   setIsOpen(false);
+                  setName("");
+                  setPosition("");
+                  setSalary("");
+                  setSince("");
+                  setEditIndex(null);
                 }}
               >
                 Cancel

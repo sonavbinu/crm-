@@ -1,22 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const Country = require("../models/Country");
+const State = require("../models/State");
 
-//add country
+//add state
 router.post("/add", async (req, res) => {
   try {
     const { name, code } = req.body;
 
-    const country = new Country({
+    const state = new State({
       name,
       code,
     });
-    await country.save();
+    await state.save();
 
     res.status(201).json({
       success: true,
-      message: "Country added successfully",
-      country,
+      message: "State added ",
+      state,
     });
   } catch (error) {
     res.status(500).json({
@@ -26,11 +26,11 @@ router.post("/add", async (req, res) => {
   }
 });
 
-//get country
+//get state
 router.get("/", async (req, res) => {
   try {
-    const country = await Country.find();
-    res.status(200).json(country);
+    const state = await State.find();
+    res.status(200).json(state);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -40,18 +40,18 @@ router.get("/", async (req, res) => {
 
 //test
 router.get("/test", (req, res) => {
-  res.send("country route working");
+  res.send("state route working");
 });
 
 //update country
 router.put("/:id", async (req, res) => {
   try {
-    const updatedCountry = await Country.findByIdAndUpdate(
+    const updatedState = await State.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true },
     );
-    res.status(200).json(updatedCountry);
+    res.status(200).json(updatedState);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -62,11 +62,10 @@ router.put("/:id", async (req, res) => {
 //delete employee
 router.delete("/:id", async (req, res) => {
   try {
-    await Country.findByIdAndDelete(req.params.id);
-
+    await State.findByIdAndDelete(req.params.id);
     res.json({
       success: true,
-      message: "Country deleted",
+      message: "state deleted",
     });
   } catch (error) {
     res.status(500).json({

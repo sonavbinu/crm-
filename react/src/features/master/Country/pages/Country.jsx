@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Navbar from "../../../../Components/Navbar";
+import axios from "axios";
 
 const Country = () => {
   const [name, setName] = useState("");
@@ -11,104 +12,73 @@ const Country = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
 
-  const handleAdd = () => {
-    if (!name.trim() || !code.trim()) return;
-    let updated;
+  useEffect(() => {
+    fetchCountry();
+  }, []);
 
-    if (edit !== null) {
-      updated = [...countries];
-
-      updated[edit] = {
-        name,
-        code,
-      };
+  const handleAdd = async () => {
+    try {
+      if (edit) {
+        await axios.put(`http://localhost:5000/api/country/${edit}`, {
+          name,
+          code,
+        });
+      } else {
+        await axios.post(`http://localhost:5000/api/country/add`, {
+          name,
+          code,
+        });
+      }
+      fetchCountry();
+      setName("");
+      setCode("");
       setEdit(null);
-    } else {
-      updated = [...countries, { name, code }];
+      setShowForm(false);
+    } catch (error) {
+      console.log(error);
     }
-    setCountries(updated);
-    localStorage.setItem("countries", JSON.stringify(updated));
-
-    setName("");
-    setCode("");
-    setShowForm(false);
   };
 
-  useEffect(() => {
-    const stored = localStorage.getItem("countries");
-    if (stored) {
-      setCountries(JSON.parse(stored));
+  const fetchCountry = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/country");
+      setCountries(response.data);
+    } catch (error) {
+      console.log(error);
     }
-  }, []);
+  };
+
   const handleDelete = (indexDelete) => {
     const updated = countries.filter((_, index) => index !== indexDelete);
     setCountries(updated);
-
-    localStorage.setItem("countries", JSON.stringify(updated));
   };
 
-  const handleEdit = (index) => {
-    setName(countries[index].name);
-    setCode(countries[index].code);
-    setEdit(index);
+  const handleEdit = (country) => {
+    setName(country.name);
+    setCode(country.code);
+    setEdit(country._id);
     setShowForm(true);
   };
 
-  const confirmDelete = () => {
-    const updated = countries.filter((_, index) => index !== deleteIndex);
-    setCountries(updated);
-    localStorage.setItem("countries", JSON.stringify(updated));
+  const confirmDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:5000/api/country/${deleteIndex}`);
 
-    setDeleteIndex(null);
-    setShowDeleteModal(false);
+      fetchCountry();
+
+      setDeleteIndex(null);
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div>
       <Navbar />
-      {showForm && (
-        <div className=" flex flex-col justify-center items-center gap-2 fixed inset-0 bg-black/30 backdrop-blur-sm z-50">
-          <div className="border border-gray-300 p-2 bg-white rounded-lg shadow-2xl p-6 w-[400px]">
-            <div className="p-2 ">
-              <label>Country Name</label>
-              <input
-                type="text"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                className="w-full h-[40px] border hover:shadow-xl"
-              />
-            </div>{" "}
-            <div className=" p-2">
-              <label>Country Code</label>
-              <input
-                type="text"
-                onChange={(e) => setCode(e.target.value)}
-                value={code}
-                className="w-full h-[40px] border hover:shadow-xl"
-              />
-            </div>{" "}
-            <div className="flex justify-around">
-              <button
-                className="px-4 py-2 bg-gray-300 rounded cursor-pointer hover:bg-gray-500 hover:text-white "
-                onClick={() => {
-                  setShowForm(false);
-                  setName("");
-                  setCode("");
-                  setEdit(null);
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAdd}
-                className="bg-gray-500 text-white p-2 hover:bg-gray-300 cursor-pointer shadow-xl hover:shadow-3xl rounded-lg hover:text-black "
-              >
-                Add
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      <div className="flex justify-center flex-col items-center mt-4 gap-10  ">
+      <div className="flex justify-between items-center  px-2">
+        <h1 className="text-3xl font-bold text-gray-800 mt-2  w-full">
+          Country Management
+        </h1>
         <div className="flex justify-end   p-2 w-full">
           <button
             className="bg-slate-600 rounded-lg p-2 text-white hover:shadow-xl hover:bg-slate-400 cursor-pointer "
@@ -122,49 +92,106 @@ const Country = () => {
             Add country
           </button>
         </div>
-
+      </div>
+      {showForm && (
+        <div className=" flex flex-col justify-center items-center gap-2 fixed inset-0 bg-black/30 backdrop-blur-sm z-50">
+          <div className="border border-gray-300  bg-olive-50 rounded-lg  px-6 py-3">
+            <div className="p-2 ">
+              <label>Country Name</label>
+              <input
+                type="text"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                className="w-full h-[40px] border px-2"
+              />
+            </div>{" "}
+            <div className=" p-2">
+              <label>Country Code</label>
+              <input
+                type="text"
+                onChange={(e) => setCode(e.target.value.toUpperCase())}
+                value={code}
+                className="w-full h-[40px] border px-2 "
+              />
+            </div>{" "}
+            <div className="flex justify-around">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-lg cursor-pointer hover:bg-gray-500 hover:text-white "
+                onClick={() => {
+                  setShowForm(false);
+                  setName("");
+                  setCode("");
+                  setEdit(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAdd}
+                className="bg-gray-700 text-white px-4 py-2 hover:bg-gray-300 cursor-pointer shadow-xl hover:shadow-3xl rounded-lg hover:text-black "
+              >
+                {edit ? "Update" : "Add"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="flex justify-center flex-col items-center mt-4 gap-10  ">
         <div className="flex w-full  ">
           {" "}
           <div className=" w-full">
             <table className="  bg-white w-full">
               <thead>
-                <tr className="border text-gray-400 font-thin ">
-                  <th className="border ">Index</th>
+                <tr className="text-white bg-slate-700 ">
+                  <th className="border ">#</th>
                   <th className="border p-4 ">Country Name</th>
                   <th className="border p-2">Code</th>
                   <th className="border p-2">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {countries.map((country, index) => (
-                  <tr key={index}>
-                    <td className="border p-2 border-gray-300">{index}</td>
-                    <td className="border p-2 border-gray-300">
-                      {country.name}
-                    </td>
-                    <td className="border p-2 border-gray-300">
-                      {country.code}
-                    </td>
-
-                    <td className=" p-2 border border-gray-300  flex justify-around ">
-                      <button
-                        className="text-green-500 cursor-pointer hover:text-green-700 "
-                        onClick={() => handleEdit(index)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="text-red-500 cursor-pointer hover:text-red-700"
-                        onClick={() => {
-                          setDeleteIndex(index);
-                          setShowDeleteModal(true);
-                        }}
-                      >
-                        Delete
-                      </button>
+                {countries.length === 0 ? (
+                  <tr>
+                    <td colSpan="4" className="text-center p-6 text-gray-500">
+                      No countries added yet
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  countries.map((country, index) => (
+                    <tr
+                      key={country._id}
+                      className="hover:bg-gray-50 transition"
+                    >
+                      <td className="border p-2 border-gray-300">
+                        {index + 1}
+                      </td>
+                      <td className="border p-2 border-gray-300">
+                        {country.name}
+                      </td>
+                      <td className="border p-2 border-gray-300">
+                        {country.code}
+                      </td>
+
+                      <td className=" p-2 border border-gray-300  flex justify-around ">
+                        <button
+                          className="text-green-700 cursor-pointer hover:bg-green-100 px-3 py-1 bg-green-200 rounded"
+                          onClick={() => handleEdit(country)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="text-red-500 cursor-pointer hover:text-red-700 hover:bg-red-100 px-3 py-1 bg-red-200 rounded"
+                          onClick={() => {
+                            setDeleteIndex(country._id);
+                            setShowDeleteModal(true);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>{" "}
             {showDeleteModal && (
@@ -194,7 +221,7 @@ const Country = () => {
                 </div>
               </div>
             )}
-          </div>{" "}
+          </div>
         </div>
       </div>
     </div>

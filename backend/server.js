@@ -5,6 +5,8 @@ const dotenv = require("dotenv");
 
 const connectDB = require("./config/db");
 const employeeRoutes = require("./routes/employeeRoutes");
+const countryRoutes = require("./routes/countryRoutes");
+const stateRoutes = require("./routes/stateRoutes");
 
 dotenv.config();
 
@@ -15,6 +17,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/employees", employeeRoutes);
+app.use("/api/country", countryRoutes);
+app.use("/api/state", stateRoutes);
 
 app.get("/", (req, res) => {
   res.send("API running");

@@ -5,9 +5,9 @@ const Navbar = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <div className="flex justify-end items-center px-6 py-3  gap-8 border bg-slate-900 ">
+      <div className="flex justify-end bg-slate-700 ">
         <h1
-          className="bg-slate-400 text-white px-4 py-2 rounded-md text-2xl cursor-pointer hover:bg-slate-700 hover:shadow-3xl transition"
+          className=" text-white px-4 py-2 rounded-md text-lg cursor-pointer hover:bg-slate-600 hover:shadow-3xl transition"
           onClick={() => {
             navigate("/dashboard");
           }}
@@ -15,7 +15,7 @@ const Navbar = () => {
           Dashboard
         </h1>
         <h1
-          className="bg-slate-400 text-white px-4 py-2 rounded-md text-2xl cursor-pointer hover:bg-slate-700"
+          className="text-white px-4 py-2 rounded-md text-lg cursor-pointer hover:bg-slate-600"
           onClick={() => {
             navigate("/master");
           }}
@@ -23,7 +23,7 @@ const Navbar = () => {
           Master
         </h1>
         <h1
-          className="bg-slate-400 text-white px-4 py-2 rounded-md text-2xl cursor-pointer hover:bg-slate-700"
+          className=" text-white px-4 py-2 rounded-md text-lg cursor-pointer hover:bg-slate-600"
           onClick={() => {
             navigate("/employees");
           }}
