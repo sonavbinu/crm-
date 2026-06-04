@@ -89,9 +89,21 @@ const Employees = () => {
   return (
     <div>
       <Navbar />
-      <h1 className="text-4xl  font-bold p-4 flex text-center ">
-        Employee Management
-      </h1>
+      <div className="flex justify-between">
+        <h1 className="text-4xl  font-bold p-4 flex text-center ">
+          Employee Management
+        </h1>
+        <div className="flex p-2 justify-end">
+          <h2
+            className="  text-white flex items-center
+            justify-end px-4 py-2 bg-slate-700 rounded-xl w-auto hover:bg-slate-500 cursor-pointer "
+            onClick={() => setIsOpen(true)}
+          >
+            Add Employee
+          </h2>
+        </div>
+      </div>
+
       <div className="flex flex-col">
         {isOpen && (
           <div className="fixed inset-0 flex flex-col justify-center items-center backdrop-blur-sm z-50 bg-black/30">
@@ -248,15 +260,7 @@ const Employees = () => {
             </div>
           </div>
         )}
-        <div className="flex p-2 justify-end">
-          <h2
-            className="  text-white flex items-center
-            justify-end px-4 py-2 bg-slate-700 rounded-xl w-auto hover:bg-slate-500 cursor-pointer "
-            onClick={() => setIsOpen(true)}
-          >
-            Add Employee
-          </h2>
-        </div>
+
         {showView && viewEmployee && (
           <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center">
             <div className="bg-white p-6 rounded-lg w-[400px]">

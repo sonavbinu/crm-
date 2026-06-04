@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../../Components/Navbar";
-import axios from "axios";
+import {
+  addStates,
+  deleteStates,
+  getStates,
+  updateStates,
+} from "../services/stateService";
+import StateFormModal from "../components/StateFormModal";
+import DeleteStateFormModal from "../components/DeleteStateFormModal";
 
 const State = () => {
   const [name, setName] = useState("");
@@ -18,30 +25,37 @@ const State = () => {
   const handleAdd = async () => {
     try {
       if (edit) {
-        await axios.put(`http://localhost:5000/api/state/${edit}`, {
+        await updateStates(edit, {
           name,
           code,
         });
       } else {
-        await axios.post(`http://localhost:5000/api/state/add`, {
+        await addStates({
           name,
           code,
         });
       }
       fetchState();
-      setName("");
-      setCode("");
-      setEdit(null);
-      setShowForm(false);
+      closeForm();
     } catch (error) {
       console.log(error);
     }
   };
 
+  const resetForm = () => {
+    setName("");
+    setCode("");
+    setEdit(null);
+  };
+
+  const closeForm = () => {
+    resetForm();
+    setShowForm(false);
+  };
   const fetchState = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/state");
-      setState(response.data);
+      const { data } = await getStates();
+      setState(data);
     } catch (error) {
       console.log(error);
     }
@@ -56,7 +70,7 @@ const State = () => {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/state/${deleteIndex}`);
+      await deleteStates(deleteIndex);
       fetchState();
 
       setDeleteIndex(null);
@@ -64,6 +78,16 @@ const State = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setDeleteIndex(null);
+  };
+
+  const openAddForm = () => {
+    resetForm();
+    setShowForm(true);
   };
   return (
     <div>
@@ -74,12 +98,7 @@ const State = () => {
         </h1>
         <div className="flex justify-end p-2 w-full">
           <button
-            onClick={() => {
-              setShowForm(true);
-              setName("");
-              setCode("");
-              setEdit(null);
-            }}
+            onClick={openAddForm}
             className="bg-slate-600 rounded-lg p-2 text-white hover:shadow-xl hover:bg-slate-400 cursor-pointer "
           >
             Add State
@@ -87,48 +106,15 @@ const State = () => {
         </div>
       </div>
       {showForm && (
-        <div className="flex flex-col justify-center items-center gap-2 fixed inset-0 bg-black/30 backdrop-blur-sm z-50">
-          <div className="border border-gray-300 px-6 py-3 bg-white rounded-lg ">
-            <div className="p-2">
-              <label>State Name</label>
-              <input
-                type="text"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                className="w-full h-[40px] border px-2"
-              />
-            </div>
-            <div className="p-2">
-              <label>State Code</label>
-              <input
-                type="text"
-                onChange={(e) => setCode(e.target.value.toUpperCase())}
-                value={code}
-                className="w-full h-[40px] border px-2 "
-              />
-            </div>
-            <div className="flex justify-around">
-              <button
-                className="px-4 py-2 bg-gray-300 rounded-lg cursor-pointer hover:bg-gray-500 hover:text-white"
-                onClick={() => {
-                  setShowForm(false);
-                  setName("");
-                  setCode("");
-                  setEdit(null);
-                }}
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={handleAdd}
-                className="bg-gray-700 text-white px-4 py-2 hover:bg-gray-300 cursor-pointer shadow-xl hover:shadow-3xl rounded-lg hover:text-black"
-              >
-                {edit ? "Update" : "Add"}
-              </button>
-            </div>
-          </div>
-        </div>
+        <StateFormModal
+          name={name}
+          code={code}
+          setName={setName}
+          setCode={setCode}
+          edit={edit}
+          onSave={handleAdd}
+          onClose={closeForm}
+        />
       )}
 
       <div className="flex justify-center  flex-col items-center p-2 mt-4 gap-10">
@@ -175,31 +161,12 @@ const State = () => {
               </tbody>
             </table>
             {showDeleteModal && (
-              <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center z-50 justify-center">
-                <div className="bg-white rounded-lg shadow-2xl p-6 w-[350px]">
-                  <p className="text-gray-600 mb-6">
-                    Are you sure you want to delete this states?
-                  </p>{" "}
-                  <div className="flex justify-end gap-3">
-                    <button
-                      onClick={() => {
-                        setShowDeleteModal(false);
-                        setDeleteIndex(null);
-                      }}
-                      className="px-4 py-2 bg-gray-500 rounded hover:bg-gray-300 text-white hover:text-black cursor-pointer"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-500 hover:text-white cursor-pointer"
-                      onClick={confirmDelete}
-                    >
-                      {" "}
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <DeleteStateFormModal
+                title="Delete state"
+                message="Are you sure you want to delete this state?"
+                onDelete={confirmDelete}
+                onClose={closeDeleteModal}
+              />
             )}
           </div>
         </div>

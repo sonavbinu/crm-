@@ -99,12 +99,12 @@ const Country = () => {
     <div>
       <Navbar />
       <div className="flex justify-between items-center  px-2">
-        <h1 className="text-3xl font-bold text-gray-800 mt-2  w-full">
+        <h1 className="text-4xl p-4 font-bold text-gray-800 mt-2  w-full">
           Country Management
         </h1>
         <div className="flex justify-end   p-2 w-full">
           <button
-            className="bg-slate-600 rounded-lg p-2 text-white hover:shadow-xl hover:bg-slate-400 cursor-pointer "
+            className="bg-slate-600 rounded-xl w-auto px-4 py-2 text-white  hover:bg-slate-500 cursor-pointer  flex items-center "
             onClick={openAddForm}
           >
             Add country

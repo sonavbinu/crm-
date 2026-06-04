@@ -1,6 +1,6 @@
 import React from "react";
 
-const DeleteCityModal = ({ message, onDelete, onClose }) => {
+const DeleteStateFormModal = ({ message, onDelete, onClose }) => {
   return (
     <div>
       <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center z-50 justify-center">
@@ -17,6 +17,7 @@ const DeleteCityModal = ({ message, onDelete, onClose }) => {
               className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-500 hover:text-white cursor-pointer"
               onClick={onDelete}
             >
+              {" "}
               Delete
             </button>
           </div>
@@ -26,4 +27,4 @@ const DeleteCityModal = ({ message, onDelete, onClose }) => {
   );
 };
 
-export default DeleteCityModal;
+export default DeleteStateFormModal;

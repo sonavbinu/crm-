@@ -91,13 +91,13 @@ const City = () => {
     <div>
       <Navbar />
       <div className="flex justify-between items-center px-2">
-        <h1 className="text-3xl font-bold text-gray-800 mt-2 w-full">
+        <h1 className="text-4xl p-4 font-bold text-gray-800 mt-2 w-full">
           City Management
         </h1>
         <div className="flex justify-end p-2 w-full">
           <button
             onClick={openAddForm}
-            className="bg-slate-600 rounded-lg p-2 text-white hover:shadow-xl hover:bg-slate-400 cursor-pointer text-center"
+            className="bg-slate-600 rounded-xl px-4 py-2 text-white hover:shadow-xl hover:bg-slate-400 cursor-pointer text-center"
           >
             Add City
           </button>
