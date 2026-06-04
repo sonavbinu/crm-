@@ -2,6 +2,15 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import Navbar from "../../../../Components/Navbar";
 import axios from "axios";
+import {
+  addCountry,
+  deleteCountry,
+  updateCountry,
+  getCountry,
+} from "../services/countryService";
+import { addCity } from "../../City.jsx/services/cityService";
+import CountryFormModal from "../components/CountryFormModal";
+import DeleteCountryModal from "../components/DeleteCountryModal";
 
 const Country = () => {
   const [name, setName] = useState("");
@@ -19,38 +28,42 @@ const Country = () => {
   const handleAdd = async () => {
     try {
       if (edit) {
-        await axios.put(`http://localhost:5000/api/country/${edit}`, {
+        await updateCountry(edit, {
           name,
           code,
         });
       } else {
-        await axios.post(`http://localhost:5000/api/country/add`, {
-          name,
-          code,
-        });
+        (await addCity,
+          {
+            name,
+            code,
+          });
       }
       fetchCountry();
-      setName("");
-      setCode("");
-      setEdit(null);
-      setShowForm(false);
+      closeForm();
     } catch (error) {
       console.log(error);
     }
+  };
+  const resetForm = () => {
+    setName("");
+    setCode("");
+    setEdit(null);
+  };
+
+  const closeForm = () => {
+    resetForm();
+    setShowForm(false);
   };
 
   const fetchCountry = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/country");
-      setCountries(response.data);
+      const { data } = await getCountry();
+      console.log(data);
+      setCountries(data);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleDelete = (indexDelete) => {
-    const updated = countries.filter((_, index) => index !== indexDelete);
-    setCountries(updated);
   };
 
   const handleEdit = (country) => {
@@ -62,7 +75,7 @@ const Country = () => {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/country/${deleteIndex}`);
+      await deleteCountry(deleteIndex);
 
       fetchCountry();
 
@@ -71,6 +84,16 @@ const Country = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setDeleteIndex(null);
+  };
+
+  const openAddForm = () => {
+    resetForm();
+    setShowForm(true);
   };
   return (
     <div>
@@ -82,59 +105,22 @@ const Country = () => {
         <div className="flex justify-end   p-2 w-full">
           <button
             className="bg-slate-600 rounded-lg p-2 text-white hover:shadow-xl hover:bg-slate-400 cursor-pointer "
-            onClick={() => {
-              setShowForm(true);
-              setName("");
-              setCode("");
-              setEdit(null);
-            }}
+            onClick={openAddForm}
           >
             Add country
           </button>
         </div>
       </div>
       {showForm && (
-        <div className=" flex flex-col justify-center items-center gap-2 fixed inset-0 bg-black/30 backdrop-blur-sm z-50">
-          <div className="border border-gray-300  bg-olive-50 rounded-lg  px-6 py-3">
-            <div className="p-2 ">
-              <label>Country Name</label>
-              <input
-                type="text"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                className="w-full h-[40px] border px-2"
-              />
-            </div>{" "}
-            <div className=" p-2">
-              <label>Country Code</label>
-              <input
-                type="text"
-                onChange={(e) => setCode(e.target.value.toUpperCase())}
-                value={code}
-                className="w-full h-[40px] border px-2 "
-              />
-            </div>{" "}
-            <div className="flex justify-around">
-              <button
-                className="px-4 py-2 bg-gray-300 rounded-lg cursor-pointer hover:bg-gray-500 hover:text-white "
-                onClick={() => {
-                  setShowForm(false);
-                  setName("");
-                  setCode("");
-                  setEdit(null);
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAdd}
-                className="bg-gray-700 text-white px-4 py-2 hover:bg-gray-300 cursor-pointer shadow-xl hover:shadow-3xl rounded-lg hover:text-black "
-              >
-                {edit ? "Update" : "Add"}
-              </button>
-            </div>
-          </div>
-        </div>
+        <CountryFormModal
+          name={name}
+          code={code}
+          setName={setName}
+          setCode={setCode}
+          edit={edit}
+          onSave={handleAdd}
+          onClose={closeForm}
+        />
       )}
       <div className="flex justify-center flex-col items-center mt-4 gap-10  ">
         <div className="flex w-full  ">
@@ -195,31 +181,12 @@ const Country = () => {
               </tbody>
             </table>{" "}
             {showDeleteModal && (
-              <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
-                <div className="bg-white rounded-lg shadow-2xl p-6 w-[350px]">
-                  <p className="text-gray-600 mb-6">
-                    Are you sure you want to delete this country ?
-                  </p>
-
-                  <div className="flex justify-end gap-3">
-                    <button
-                      className="px-4 py-2 bg-gray-500 rounded hover:bg-gray-300 text-white hover:text-black cursor-pointer"
-                      onClick={() => {
-                        setShowDeleteModal(false);
-                        setDeleteIndex(null);
-                      }}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-500 hover:text-white cursor-pointer"
-                      onClick={confirmDelete}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <DeleteCountryModal
+                title="Delete Country"
+                message="Are you sure u want to delete this country?"
+                onDelete={confirmDelete}
+                onClose={closeDeleteModal}
+              />
             )}
           </div>
         </div>
