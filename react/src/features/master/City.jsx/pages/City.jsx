@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../../Components/Navbar";
+import CityFormModal from "../components/CityFormModal";
+import DeleteCityModal from "../components/DeleteCityModal";
+import {
+  addCity,
+  getCities,
+  updateCity,
+  deleteCity,
+} from "../services/cityService";
 
 const City = () => {
   const [name, setName] = useState("");
@@ -10,127 +18,110 @@ const City = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
 
-  const handleAdd = () => {
-    if (!name.trim() || !code.trim()) return;
+  useEffect(() => {
+    fetchCity();
+  }, []);
 
-    let updated;
+  const handleAdd = async () => {
+    try {
+      if (edit) {
+        await updateCity(edit, { name, code });
+      } else {
+        await addCity({ name, code });
+      }
 
-    if (edit !== null) {
-      updated = [...city];
-
-      updated[edit] = {
-        name,
-        code,
-      };
-      setEdit(null);
-    } else {
-      updated = [...city, { name, code }];
+      fetchCity();
+      closeForm();
+    } catch (error) {
+      console.log(error);
     }
-    setCity(updated);
-    localStorage.setItem("city", JSON.stringify(updated));
+  };
 
+  const resetForm = () => {
     setName("");
     setCode("");
+    setEdit(null);
+  };
+
+  const closeForm = () => {
+    resetForm();
     setShowForm(false);
   };
 
-  useEffect(() => {
-    const stored = localStorage.getItem("city");
-    if (stored) {
-      setCity(JSON.parse(stored));
+  const fetchCity = async () => {
+    try {
+      const { data } = await getCities();
+      console.log(data);
+      setCity(data);
+    } catch (error) {
+      console.log(error);
     }
-  }, []);
-
-  const handleDelete = (indexDelete) => {
-    const updated = city.filter((_, index) => index !== indexDelete);
-
-    setCity(updated);
-    localStorage.setItem("city", JSON.stringify(updated));
   };
 
-  const handleEdit = (index) => {
-    setName(city[index].name);
-    setCode(city[index].code);
-    setEdit(index);
+  const handleEdit = (city) => {
+    setName(city.name);
+    setCode(city.code);
+    setEdit(city._id);
     setShowForm(true);
   };
 
-  const confirmDelete = () => {
-    const updated = city.filter((_, index) => index !== deleteIndex);
-    setCity(updated);
-    localStorage.setItem("city", JSON.stringify(updated));
+  const confirmDelete = async () => {
+    try {
+      await deleteCity(deleteIndex);
 
-    setDeleteIndex(null);
+      fetchCity();
+
+      setDeleteIndex(null);
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const closeDeleteModal = () => {
     setShowDeleteModal(false);
+    setDeleteIndex(null);
+  };
+
+  const openAddForm = () => {
+    resetForm();
+    setShowForm(true);
   };
   return (
     <div>
       <Navbar />
-      {showForm && (
-        <div className="flex flex-col justify-center items-center gap-2 fixed inset-0 bg-black/30 backdrop-blur-sm z-50">
-          <div className="border border-gray-300 p-2 bg-white rounded-lg shadow-2xl p-6 w-[400px]">
-            <div className="p-2">
-              <label>City Name</label>
-              <input
-                type="text"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                className="w-full h-[40px] border hover:shadow-xl "
-              />
-            </div>
-            <div className="p-2">
-              <label>City Code</label>
-              <input
-                type="text"
-                onChange={(e) => setCode(e.target.value)}
-                value={code}
-                className="w-full h-[40px] border hover:shadow-xl"
-              />
-            </div>
-            <div className="flex justify-around">
-              <button
-                className="px-4 py-2 bg-gray-300 rounded cursor-pointer hover:bg-gray-500 hover:text-white"
-                onClick={() => {
-                  setShowForm(false);
-                  setName("");
-                  setCode("");
-                  setEdit(null);
-                }}
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={handleAdd}
-                className="bg-gray-500 text-white p-2 hover:bg-gray-300 cursor-pointer shadow-xl hover:shadow-3xl rounded-lg hover:text-black"
-              >
-                Add
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="flex items-end p-2 flex-col items-center mt-3 gap-10">
-        <div>
+      <div className="flex justify-between items-center px-2">
+        <h1 className="text-3xl font-bold text-gray-800 mt-2 w-full">
+          City Management
+        </h1>
+        <div className="flex justify-end p-2 w-full">
           <button
-            onClick={() => {
-              setShowForm(true);
-              setName("");
-              setCode("");
-              setEdit(null);
-            }}
+            onClick={openAddForm}
             className="bg-slate-600 rounded-lg p-2 text-white hover:shadow-xl hover:bg-slate-400 cursor-pointer text-center"
           >
             Add City
           </button>
         </div>
+      </div>
+      {showForm && (
+        <CityFormModal
+          name={name}
+          code={code}
+          setName={setName}
+          setCode={setCode}
+          edit={edit}
+          onSave={handleAdd}
+          onClose={closeForm}
+        />
+      )}
+
+      <div className="flex justify-center items-center p-2 flex-col items-center mt-4 gap-10">
         <div className="flex w-full">
           <div className="w-full">
             <table className=" bg-white w-full">
               <thead>
-                <tr className="border text-gray-400 font-thin">
-                  <th className="border ">Index</th>
+                <tr className="text-white bg-slate-700">
+                  <th className="border ">#</th>
                   <th className="border p-4">City Name</th>
                   <th className="border ">City Code</th>
                   <th className="border">Actions</th>
@@ -138,8 +129,8 @@ const City = () => {
               </thead>
               <tbody>
                 {city.map((cities, index) => (
-                  <tr key={index}>
-                    <td className="border p-2 border-gray-300">{index}</td>
+                  <tr key={cities._id} className="hover:bg-gray-50">
+                    <td className="border p-2 border-gray-300">{index + 1}</td>
                     <td className="border p-2 border-gray-300">
                       {cities.name}
                     </td>
@@ -148,17 +139,17 @@ const City = () => {
                     </td>
                     <td className="flex  border p-2 justify-around  border-gray-300 ">
                       <button
-                        className="text-green-500 cursor-pointer hover:text-green-700"
-                        onClick={() => handleEdit(index)}
+                        className="text-green-500 cursor-pointer hover:text-green-700 px-4 py-1  bg-green-200 rounded hover:bg-green-100 "
+                        onClick={() => handleEdit(cities)}
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => {
-                          setDeleteIndex(index);
+                          setDeleteIndex(cities._id);
                           setShowDeleteModal(true);
                         }}
-                        className="text-red-500 cursor-pointer hover:text-red-700"
+                        className="text-red-500 cursor-pointer hover:text-red-700 px-4 py-1 bg-red-200 hover:bg-red-100 rounded"
                       >
                         Delete
                       </button>
@@ -168,31 +159,12 @@ const City = () => {
               </tbody>
             </table>
             {showDeleteModal && (
-              <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center z-50 justify-center">
-                <div className="bg-white rounded-lg shadow-2xl p-6 w-[350px]">
-                  <p className="text-gray-600 mb-6">
-                    Are you sure you want to delete this country?
-                  </p>{" "}
-                  <div className="flex justify-end gap-3">
-                    <button
-                      onClick={() => {
-                        setShowDeleteModal(false);
-                        setDeleteIndex(null);
-                      }}
-                      className="px-4 py-2 bg-gray-500 rounded hover:bg-gray-300 text-white hover:text-black cursor-pointer"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-500 hover:text-white cursor-pointer"
-                      onClick={confirmDelete}
-                    >
-                      {" "}
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <DeleteCityModal
+                title="Delete City"
+                message="Are you sure you want to delete this city?"
+                onDelete={confirmDelete}
+                onClose={closeDeleteModal}
+              />
             )}
           </div>
         </div>

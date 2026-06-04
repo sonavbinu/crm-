@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../../Components/Navbar";
+import Navbar from "../../../../Components/Navbar";
 import axios from "axios";
 
 const State = () => {
@@ -155,7 +155,7 @@ const State = () => {
                     </td>
                     <td className=" p-2 border flex justify-around border-gray-300 ">
                       <button
-                        className="text-green-500 cursor-pointer hover:text-green-700 px-4 py-1 bg-green-200 rounded "
+                        className="text-green-500 cursor-pointer hover:bg-green-100 hover:text-green-700 px-4 py-1 bg-green-200 rounded "
                         onClick={() => handleEdit(states)}
                       >
                         Edit

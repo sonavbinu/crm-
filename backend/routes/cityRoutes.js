@@ -1,22 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const State = require("../models/State");
+const City = require("../models/City");
 
-//add state
+//add city
 router.post("/add", async (req, res) => {
   try {
     const { name, code } = req.body;
 
-    const state = new State({
+    const city = new City({
       name,
       code,
     });
-    await state.save();
+    await city.save();
 
     res.status(201).json({
       success: true,
-      message: "State added ",
-      state,
+      message: "City added",
+      city,
     });
   } catch (error) {
     res.status(500).json({
@@ -26,11 +26,11 @@ router.post("/add", async (req, res) => {
   }
 });
 
-//get state
+//get city
 router.get("/", async (req, res) => {
   try {
-    const state = await State.find();
-    res.status(200).json(state);
+    const city = await City.find();
+    res.status(200).json(city);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -40,18 +40,16 @@ router.get("/", async (req, res) => {
 
 //test
 router.get("/test", (req, res) => {
-  res.send("state route working");
+  res.send("city route working");
 });
 
-//update state
+//update city
 router.put("/:id", async (req, res) => {
   try {
-    const updatedState = await State.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true },
-    );
-    res.status(200).json(updatedState);
+    const updatedCity = await City.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.status(200).json(updatedCity);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -59,13 +57,13 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-//delete state
+//delete city
 router.delete("/:id", async (req, res) => {
   try {
-    await State.findByIdAndDelete(req.params.id);
+    await City.findByIdAndDelete(req.params.id);
     res.json({
       success: true,
-      message: "state deleted",
+      message: "city deleted",
     });
   } catch (error) {
     res.status(500).json({

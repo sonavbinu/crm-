@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../../../Components/Navbar";
+import Navbar from "../Navbar";
 
 const Employees = () => {
   const [name, setName] = useState("");
@@ -90,7 +90,7 @@ const Employees = () => {
     <div>
       <Navbar />
       <h1 className="text-4xl  font-bold p-4 flex text-center ">
-        Employee Details
+        Employee Management
       </h1>
       <div className="flex flex-col">
         {isOpen && (
