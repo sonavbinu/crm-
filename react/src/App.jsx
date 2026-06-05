@@ -1,31 +1,70 @@
-import React from "react";
-import Register from "./features/auth/pages/Register";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+
 import Login from "./features/auth/pages/Login";
+import Register from "./features/auth/pages/Register";
+
 import Dashboard from "./features/dashboard/pages/Dashboard";
+
+import Employees from "./Components/Admin/Employees";
+import AdminProfile from "./Components/Admin/AdminProfile";
+import EmployeeProfile from "./Components/employee/EmployeeProfile";
+
 import Master from "./features/master/Master";
 import Country from "./features/master/Country/pages/Country";
 import State from "./features/master/State/pages/State";
 import City from "./features/master/City.jsx/pages/City";
-import Employees from "./Components/employee/Employees";
+
+import DashboardLayout from "./Components/Layout/DashboardLayout";
+import ProtectedRoute from "./Components/Components/ProtectedRoute";
 
 const App = () => {
   return (
-    <div>
-      {" "}
-      {/* <Navbar /> */}
-      <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/master" element={<Master />} />
-        <Route path="/countries" element={<Country />} />
-        <Route path="/state" element={<State />} />
-        <Route path="/countries" element={<Country />} />
-        <Route path="/cities" element={<City />} />
-        <Route path="/employees" element={<Employees />} />
-      </Routes>
-    </div>
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      {/* Admin Layout */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="profile" element={<AdminProfile />} />
+        <Route path="employees" element={<Employees />} />
+      </Route>
+
+      {/* Employee Layout */}
+      <Route
+        path="/employee"
+        element={
+          <ProtectedRoute allowedRoles={["employee"]}>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="profile" element={<EmployeeProfile />} />
+      </Route>
+
+      {/* Other Routes */}
+      <Route path="/master" element={<Master />} />
+      <Route path="/countries" element={<Country />} />
+      <Route path="/state" element={<State />} />
+      <Route path="/cities" element={<City />} />
+
+      {/* Default Route */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
+
+      {/* 404 Route */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   );
 };
 

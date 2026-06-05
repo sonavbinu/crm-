@@ -30,6 +30,12 @@ const Navbar = () => {
         >
           Employees
         </h1>
+        <h1
+          className="text-red-400 px-4 py-2 rounded-md text-lg cursor-pointer hover:bg-slate-600"
+          onClick={() => navigate("/login")}
+        >
+          Logout
+        </h1>
       </div>
     </div>
   );

@@ -33,11 +33,10 @@ const Country = () => {
           code,
         });
       } else {
-        (await addCity,
-          {
-            name,
-            code,
-          });
+        await addCountry({
+          name,
+          code,
+        });
       }
       fetchCountry();
       closeForm();

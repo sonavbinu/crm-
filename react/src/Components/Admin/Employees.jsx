@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../Navbar";
+import DashboardLayout from "../Layout/DashboardLayout";
 
 const Employees = () => {
   const [name, setName] = useState("");
@@ -88,7 +88,6 @@ const Employees = () => {
 
   return (
     <div>
-      <Navbar />
       <div className="flex justify-between">
         <h1 className="text-4xl  font-bold p-4 flex text-center ">
           Employee Management

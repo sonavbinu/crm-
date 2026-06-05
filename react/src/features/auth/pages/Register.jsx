@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../services/authService";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -7,6 +8,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState("employee");
 
   const navigate = useNavigate();
 
@@ -25,21 +27,25 @@ const Register = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
+    try {
+      setLoading(true);
+      await registerUser({
+        firstName,
+        lastName,
+        email,
+        password,
+        role,
+      });
 
-    const userData = {
-      firstName,
-      lastName,
-      email,
-      password,
-    };
-    localStorage.setItem("user", JSON.stringify(userData));
-    console.log(userData);
-    setLoading(false);
-    navigate("/login");
+      alert("Registration successful");
+      navigate("/login");
+    } catch (error) {
+      console.log(error.response?.data);
+      alert(error.response?.data?.message || "Registration failed");
+    }
   };
   return (
     <div>
@@ -101,10 +107,23 @@ const Register = () => {
                 value={password}
                 minLength={6}
                 placeholder="Password"
+                required
                 className="w-full h-[40px] border-[1px] rounded-md outline-none p-2 focus:ring-1 focus:ring-black"
               />
             </div>
           </div>{" "}
+          <div>
+            <label>Role</label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="border p-2 rounded w-full"
+              id=""
+            >
+              <option value="employee">Employee</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
           <button
             type="submit"
             disabled={loading}
