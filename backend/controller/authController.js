@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Employee = require("../models/Employee");
 
 // Register
 const register = async (req, res) => {
@@ -23,6 +24,12 @@ const register = async (req, res) => {
       email,
       password: hashedPassword,
       role: role || "employee",
+    });
+
+    await Employee.create({
+      userId: user._id,
+      name: `${firstName} ${lastName}`,
+      position: "New Employee",
     });
 
     res.status(201).json({

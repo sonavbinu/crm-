@@ -16,6 +16,9 @@ import City from "./features/master/City.jsx/pages/City";
 
 import DashboardLayout from "./Components/Layout/DashboardLayout";
 import ProtectedRoute from "./Components/Components/ProtectedRoute";
+import ApplyLeave from "./Components/employee/ApplyLeave";
+import LeaveRequests from "./Components/Admin/LeaveRequests";
+import MyLeaves from "./Components/employee/MyLeaves";
 
 const App = () => {
   return (
@@ -37,6 +40,7 @@ const App = () => {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="profile" element={<AdminProfile />} />
         <Route path="employees" element={<Employees />} />
+        <Route path="leaves" element={<LeaveRequests />} />
       </Route>
 
       {/* Employee Layout */}
@@ -51,6 +55,8 @@ const App = () => {
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="profile" element={<EmployeeProfile />} />
+        <Route path="apply-leave" element={<ApplyLeave />} />
+        <Route path="my-leaves" element={<MyLeaves />} />
       </Route>
 
       {/* Other Routes */}

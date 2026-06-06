@@ -1,8 +1,15 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("currentUser"));
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("currentuser");
+    navigate("/login");
+  };
 
   const navClass = ({ isActive }) =>
     `flex items-center px-4 py-3 rounded-lg transition-all duration-200 ${
@@ -43,6 +50,11 @@ const Sidebar = () => {
                   Employees
                 </NavLink>
               </li>
+              <li>
+                <NavLink to="/admin/leaves" className={navClass}>
+                  Leave Requests
+                </NavLink>
+              </li>
             </>
           )}
 
@@ -59,12 +71,25 @@ const Sidebar = () => {
                   My Profile
                 </NavLink>
               </li>
+              <li>
+                <NavLink to="/employee/apply-leave" className={navClass}>
+                  Apply Leave
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/employee/my-leaves" className={navClass}>
+                  My Leaves
+                </NavLink>
+              </li>
             </>
           )}
         </ul>
       </nav>
       <div>
-        <button className="w-full bg-red-500 py-2 rounded-lg hover:bg-red-600 cursor-pointer">
+        <button
+          className="w-full bg-red-500 py-2 rounded-lg hover:bg-red-600 cursor-pointer"
+          onClick={handleLogout}
+        >
           Logout
         </button>
       </div>

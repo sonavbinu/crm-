@@ -95,7 +95,7 @@ const Employees = () => {
         <div className="flex p-2 justify-end">
           <h2
             className="  text-white flex items-center
-            justify-end px-4 py-2 bg-slate-700 rounded-xl w-auto hover:bg-slate-500 cursor-pointer "
+            justify-end px-4 py-2 bg-slate-800 rounded-xl w-auto hover:bg-slate-500 cursor-pointer  "
             onClick={() => setIsOpen(true)}
           >
             Add Employee
@@ -114,7 +114,7 @@ const Employees = () => {
                     type="text"
                     onChange={(e) => setName(e.target.value)}
                     value={name}
-                    className="p-2 border  "
+                    className="p-2 border border-gray-400 rounded "
                   />
                 </div>
                 <div className="flex flex-col ">
@@ -123,7 +123,7 @@ const Employees = () => {
                     type="text"
                     onChange={(e) => setPosition(e.target.value)}
                     value={position}
-                    className="p-2 border"
+                    className="p-2 border border-gray-400 rounded"
                   />
                 </div>
               </div>
@@ -134,7 +134,7 @@ const Employees = () => {
                     type="date"
                     onChange={(e) => setSince(e.target.value)}
                     value={since}
-                    className="p-2 border"
+                    className="p-2 border border-gray-400 rounded"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -143,7 +143,7 @@ const Employees = () => {
                     type="number"
                     onChange={(e) => setSalary(e.target.value)}
                     value={salary}
-                    className="p-2 border"
+                    className="p-2 border border-gray-400 rounded"
                   />
                 </div>
               </div>
@@ -173,9 +173,9 @@ const Employees = () => {
             </div>
           </div>
         )}
-        <table className="w-full border mt-5">
+        <table className="w-full mt-5 rounded-xl">
           <thead>
-            <tr className="bg-slate-700 text-white">
+            <tr className="bg-slate-800 text-white rounded">
               <th className="border p-4 text-center">#</th>
               <th className="border p-4">Name</th>
               <th className="border">Job Position</th>
@@ -193,10 +193,15 @@ const Employees = () => {
               </tr>
             ) : (
               details.map((detail, index) => (
-                <tr key={detail._id} className="hover:bg-gray-50 transition">
-                  <td className="p-2 border-gray-200 border">{index + 1}</td>
-                  <td className="border p-2 border-gray-200">{detail.name}</td>
-                  <td className="border p-2 border-gray-200">
+                <tr
+                  key={detail._id}
+                  className="hover:bg-gray-50 transition bg-white "
+                >
+                  <td className="p-4 border-gray-200 border rounded">
+                    {index + 1}
+                  </td>
+                  <td className="border p-4 border-gray-200">{detail.name}</td>
+                  <td className="border p-4 border-gray-200">
                     {detail.position}
                   </td>
                   <td className="border p-2 border-gray-200">
@@ -205,10 +210,10 @@ const Employees = () => {
                   <td className="border p-2 border-gray-200">
                     Rs {detail.salary}
                   </td>
-                  <td className="flex justify-around items-center h-[40px] border-t border-gray-200">
+                  <td className="flex justify-around items-center h-[40px] border-t border-gray-200 ">
                     <button
                       onClick={() => handleView(detail)}
-                      className="text-blue-700 hover:bg-blue-50  hover:cursor-pointer px-3 py-1 rounded bg-blue-100"
+                      className="text-blue-700 hover:bg-blue-50  hover:cursor-pointer px-3 py-1 rounded bg-blue-100 "
                     >
                       View
                     </button>

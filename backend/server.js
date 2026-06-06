@@ -10,6 +10,7 @@ const countryRoutes = require("./routes/countryRoutes");
 const stateRoutes = require("./routes/stateRoutes");
 const cityRoutes = require("./routes/cityRoutes");
 const authRoutes = require("./routes/authRoutes");
+const leaveRoutes = require("./routes/leaveRoutes");
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use("/api/country", countryRoutes);
 app.use("/api/state", stateRoutes);
 app.use("/api/city", cityRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/leaves", leaveRoutes);
 
 app.get("/", (req, res) => {
   res.send("API running");
