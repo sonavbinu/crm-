@@ -37,17 +37,17 @@ const ApplyLeave = () => {
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="border p-2 rounded"
+            className="border p-2 rounded border-gray-300"
           />
           <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="border p-2 rounded"
+            className="border p-2 rounded border-gray-300"
           />
 
           <textarea
-            className="border p-2 rounded"
+            className="border p-2 rounded border-gray-300 "
             placeholder="Reason"
             value={reason}
             onChange={(e) => {
@@ -56,7 +56,7 @@ const ApplyLeave = () => {
           />
 
           <button
-            className="bg-slate-800 text-white p-2 rounded"
+            className="bg-slate-800 text-white p-2 rounded hover:cursor-pointer hover:bg-slate-700"
             onClick={handleApply}
           >
             Submit Leave Request

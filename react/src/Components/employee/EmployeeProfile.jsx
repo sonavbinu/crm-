@@ -26,7 +26,7 @@ const EmployeeProfile = () => {
   }
   return (
     <div className="flex items-center justify-center max-w-7xl">
-      <div className="border border-gray-100 shadow-xl p-10 rounded-xl w-full ">
+      <div className="border border-gray-100 shadow-xl p-10 rounded-xl w-full bg-white ">
         <div className="flex gap-4 items-center bg-blue-50 border-blue-200 border p-3 rounded-3xl">
           <div className="border rounded-4xl w-[24px] px-5 py-2 flex justify-center bg-slate-800 text-white font-bold ">
             {employee.name?.charAt(0)}
