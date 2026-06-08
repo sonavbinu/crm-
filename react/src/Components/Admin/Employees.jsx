@@ -63,10 +63,15 @@ const Employees = () => {
     setShowView(true);
   };
   const handleEdit = (employee) => {
-    setName(employee.name);
-    setPosition(employee.position);
-    setSince(new Date(employee.since).toISOString().split("T")[0]);
-    setSalary(employee.salary);
+    setName(employee.name || "");
+    setPosition(employee.position || "");
+    setSalary(employee.salary || "");
+
+    setSince(
+      employee.since
+        ? new Date(employee.since).toISOString().split("T")[0]
+        : "",
+    );
 
     setEditIndex(employee._id);
     setIsOpen(true);
@@ -213,13 +218,13 @@ const Employees = () => {
                   <td className="flex justify-around items-center h-[40px] border-t border-gray-200 ">
                     <button
                       onClick={() => handleView(detail)}
-                      className="text-blue-700 hover:bg-blue-50  hover:cursor-pointer px-3 py-1 rounded bg-blue-100 "
+                      className="text-white mt-3 hover:bg-blue-300  hover:cursor-pointer px-3 py-1 rounded bg-blue-500 "
                     >
                       View
                     </button>
                     <button
                       onClick={() => handleEdit(detail)}
-                      className="text-green-500 hover:text-green-700 hover:bg-green-50 hover:cursor-pointer px-3 py-1 rounded bg-green-100 "
+                      className="text-white mt-3 hover:bg-green-300 hover:cursor-pointer px-3 py-1 rounded bg-green-500 "
                     >
                       Edit
                     </button>
@@ -228,7 +233,7 @@ const Employees = () => {
                         setDeleteIndex(detail._id);
                         setShowDeleteModal(true);
                       }}
-                      className="text-red-500 hover:bg-red-50  hover:cursor-pointer rounded px-3 py-1 bg-red-100"
+                      className="text-white mt-3 hover:bg-red-300  hover:cursor-pointer rounded px-3 py-1 bg-red-500"
                     >
                       Delete
                     </button>
