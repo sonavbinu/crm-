@@ -38,7 +38,7 @@ const EmployeeProfile = () => {
             </div>
           </div>
         </div>
-        <div className=" rounded-3xl  p-10 ">
+        <div className=" rounded-3xl  p-3">
           <div className="flex flex-col gap-2">
             <p className="font-bold text-xl">Position</p>
             <h3 className="border-gray-200 border p-2 rounded">
