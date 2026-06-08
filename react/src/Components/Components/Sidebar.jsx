@@ -1,5 +1,6 @@
 import React from "react";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -23,7 +24,11 @@ const Sidebar = () => {
       <div>
         {/* Logo */}
         <div className="p-6 border-b border-slate-700">
-          <h2 className="text-2xl font-bold text-white">CRM System</h2>
+          <div className="flex justify-between">
+            <h2 className="text-2xl font-bold text-white">CRM System</h2>
+            <ThemeToggle />
+          </div>
+
           <p className="text-slate-400 text-sm mt-1">
             {user?.role === "admin" ? "Administrator" : "Employee"}
           </p>

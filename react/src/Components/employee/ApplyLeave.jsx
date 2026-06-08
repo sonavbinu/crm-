@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import Card from "../Components/Card";
 
 const ApplyLeave = () => {
   const [startDate, setStartDate] = useState("");
@@ -29,7 +30,7 @@ const ApplyLeave = () => {
     }
   };
   return (
-    <div className="flex justify-center w-full mt-3  ">
+    <Card className="flex justify-center w-full mt-3  ">
       <div className="bg-white px-6 py-4 rounded-xl  shadow-xl w-full max-w-xl">
         <h1 className="text-2xl font-bold mb-4">Apply Leave</h1>
         <div className="flex flex-col gap-4">
@@ -63,7 +64,7 @@ const ApplyLeave = () => {
           </button>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

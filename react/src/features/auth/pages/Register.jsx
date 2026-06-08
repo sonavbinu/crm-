@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/authService";
+import Card from "../../../Components/Components/Card";
+import ThemeToggle from "../../../Components/Components/ThemeToggle";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -48,16 +50,23 @@ const Register = () => {
     }
   };
   return (
-    <div>
+    <Card>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center gap-4  min-h-screen justify-center bg-gray-100"
+        className="flex flex-col items-center gap-4  min-h-screen justify-center bg-gray-100 dark:bg-black"
       >
-        <div className="flex  flex-col gap-6 border border-gray-400 min-w-[500px] p-8 hover:shadow-2xl  mt-3 rounded justify-center bg-slate-100">
-          <h1 className="text-3xl font-bold text-gray-500">Register</h1>
+        <div className="flex  flex-col gap-6 border border-gray-400 min-w-[500px] p-8 hover:shadow-2xl  mt-3 rounded justify-center bg-slate-100 dark:bg-black">
+          <div className="flex justify-between">
+            <h1 className="text-3xl font-bold text-gray-500 dark:text-white">
+              Register
+            </h1>
+            <div>
+              <ThemeToggle />
+            </div>
+          </div>
           <div className="grid grid-cols-2 gap-4 ">
             <div>
-              <label className="block text-gray-700 font-medium  ">
+              <label className="block text-gray-700 font-medium dark:text-white  ">
                 First Name
               </label>
               <input
@@ -71,7 +80,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium">
+              <label className="block text-gray-700 font-medium dark:text-white">
                 Last Name
               </label>
               <input
@@ -87,7 +96,9 @@ const Register = () => {
           <div className="flex gap-3">
             {" "}
             <div>
-              <label className="block text-gray-700 font-medium">Email</label>
+              <label className="block text-gray-700 font-medium dark:text-white">
+                Email
+              </label>
               <input
                 type="email"
                 onChange={handleEmailChange}
@@ -98,7 +109,7 @@ const Register = () => {
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-medium">
+              <label className="block text-gray-700 font-medium dark:text-white">
                 Password
               </label>
               <input
@@ -120,8 +131,12 @@ const Register = () => {
               className="border p-2 rounded w-full"
               id=""
             >
-              <option value="employee">Employee</option>
-              <option value="admin">Admin</option>
+              <option value="employee" className="dark:bg-black">
+                Employee
+              </option>
+              <option value="admin" className="dark:bg-black">
+                Admin
+              </option>
             </select>
           </div>
           <button
@@ -132,11 +147,11 @@ const Register = () => {
             {loading ? "Registering..." : "Register"}
           </button>{" "}
           <div className="flex items-center">
-            <p className="text-center text-sm text-gray-600">
+            <p className="text-center text-sm text-gray-600 dark:text-white">
               Already have an account?
             </p>
             <span
-              className="text-blue-600 cursor-pointer ml-1 hover:text-underline "
+              className="text-blue-600 cursor-pointer ml-1 hover:text-underline dark:text-blue-500 "
               onClick={() => navigate("/login")}
             >
               Login
@@ -144,7 +159,7 @@ const Register = () => {
           </div>
         </div>
       </form>
-    </div>
+    </Card>
   );
 };
 

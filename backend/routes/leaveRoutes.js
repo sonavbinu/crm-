@@ -1,4 +1,5 @@
 const express = require("express");
+const Leave = require("../models/Leave");
 
 const {
   applyLeave,

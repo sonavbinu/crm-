@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Card from "../Components/Card";
 
 const LeaveRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -39,13 +40,13 @@ const LeaveRequests = () => {
     }
   };
   return (
-    <div className="flex flex-col  gap-10">
+    <Card className="flex flex-col  gap-10">
       <h1 className="text-3xl font-bold flex  justify-between  items-center">
         Leave Requests
       </h1>
       <table className="border border-gray-300 w-full  ">
         <thead>
-          <tr className="border border-gray-300 bg-slate-800 text-white">
+          <tr className="border border-gray-300 bg-slate-800  text-white">
             <th className="border border-gray-300 p-3">Employee</th>
             <th className="border border-gray-300 p-2">Days</th>
             <th className="border border-gray-300 p-2">Reason</th>
@@ -55,7 +56,10 @@ const LeaveRequests = () => {
         </thead>
         <tbody>
           {requests.map((leave) => (
-            <tr key={leave._id} className="hover:bg-gray-200 ">
+            <tr
+              key={leave._id}
+              className="hover:bg-gray-50  dark:hover:bg-gray-500"
+            >
               <td className="border border-gray-300 ">
                 {leave.employeeId?.name}
               </td>
@@ -81,7 +85,7 @@ const LeaveRequests = () => {
           ))}
         </tbody>
       </table>
-    </div>
+    </Card>
   );
 };
 

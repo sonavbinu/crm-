@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardLayout from "../Layout/DashboardLayout";
+import Card from "../Components/Card";
 
 const Employees = () => {
   const [name, setName] = useState("");
@@ -92,9 +93,9 @@ const Employees = () => {
   };
 
   return (
-    <div>
+    <Card>
       <div className="flex justify-between">
-        <h1 className="text-4xl  font-bold p-4 flex text-center ">
+        <h1 className="text-4xl  font-bold p-4 flex text-center  ">
           Employee Management
         </h1>
         <div className="flex p-2 justify-end">
@@ -111,7 +112,7 @@ const Employees = () => {
       <div className="flex flex-col">
         {isOpen && (
           <div className="fixed inset-0 flex flex-col justify-center items-center backdrop-blur-sm z-50 bg-black/30">
-            <div className="border border-gray-300 px-10 py-6 rounded-xl bg-white flex flex-col gap-2 ">
+            <div className="border border-gray-300 px-10 py-6 rounded-xl bg-white dark:bg-black flex flex-col gap-2 ">
               <div className="flex gap-2">
                 <div className="flex flex-col ">
                   <label>Employee name</label>
@@ -119,7 +120,7 @@ const Employees = () => {
                     type="text"
                     onChange={(e) => setName(e.target.value)}
                     value={name}
-                    className="p-2 border border-gray-400 rounded "
+                    className="p-2 border border-gray-400 rounded  dark:bg-slate-800 dark:text-white "
                   />
                 </div>
                 <div className="flex flex-col ">
@@ -128,7 +129,7 @@ const Employees = () => {
                     type="text"
                     onChange={(e) => setPosition(e.target.value)}
                     value={position}
-                    className="p-2 border border-gray-400 rounded"
+                    className="p-2 bg-white dark:bg-slate-800 text-black dark:text-white  border dark:border-slate-700 rounded-lg py-2 px-3 border-gray-400 rounded"
                   />
                 </div>
               </div>
@@ -139,7 +140,7 @@ const Employees = () => {
                     type="date"
                     onChange={(e) => setSince(e.target.value)}
                     value={since}
-                    className="p-2 border border-gray-400 rounded"
+                    className="p-2 border border-gray-400 rounded  cursor-pointer"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -148,22 +149,22 @@ const Employees = () => {
                     type="number"
                     onChange={(e) => setSalary(e.target.value)}
                     value={salary}
-                    className="p-2 border border-gray-400 rounded"
+                    className="p-2 border border-gray-400 rounded "
                   />
                 </div>
               </div>
 
               <button
                 onClick={handleAdd}
-                className="bg-slate-700 text-white p-2 cursor-pointer hover:bg-slate-500"
+                className="bg-slate-800 text-white p-2 cursor-pointer hover:bg-slate-700"
               >
                 {editIndex ? "Update" : "Add"}
               </button>
               <button
-                className=" bg-slate-700 text-white
+                className=" bg-slate-800 text-white 
                 p-2
                 cursor-pointer
-                hover:bg-slate-500"
+                hover:bg-slate-700"
                 onClick={() => {
                   setIsOpen(false);
                   setName("");
@@ -192,7 +193,10 @@ const Employees = () => {
           <tbody>
             {details.length === 0 ? (
               <tr>
-                <td colSpan="5" className="text-center p-4 text-gray-500">
+                <td
+                  colSpan="5"
+                  className="text-center p-4 text-gray-500 dark:text-white"
+                >
                   No employees added yet
                 </td>
               </tr>
@@ -200,25 +204,27 @@ const Employees = () => {
               details.map((detail, index) => (
                 <tr
                   key={detail._id}
-                  className="hover:bg-gray-50 transition bg-white "
+                  className="hover:bg-gray-50 dark:hover:bg-gray-600 transition bg-white dark:bg-black dark:text-white "
                 >
-                  <td className="p-4 border-gray-200 border rounded">
+                  <td className="p-4 border-gray-200 border rounded text-black  dark:text-white">
                     {index + 1}
                   </td>
-                  <td className="border p-4 border-gray-200">{detail.name}</td>
-                  <td className="border p-4 border-gray-200">
+                  <td className="border p-4 border-gray-200  text-black  dark:text-white">
+                    {detail.name}
+                  </td>
+                  <td className="border p-4 border-gray-200 text-black  dark:text-white">
                     {detail.position}
                   </td>
-                  <td className="border p-2 border-gray-200">
+                  <td className="border p-2 border-gray-200  dark:text-white">
                     {new Date(detail.since).toLocaleDateString()}
                   </td>
-                  <td className="border p-2 border-gray-200">
+                  <td className="border p-2 border-gray-200  dark:text-white">
                     Rs {detail.salary}
                   </td>
-                  <td className="flex justify-around items-center h-[40px] border-t border-gray-200 ">
+                  <td className="flex justify-around items-center h-[40px] border-t border-b border-gray-200">
                     <button
                       onClick={() => handleView(detail)}
-                      className="text-white mt-3 hover:bg-blue-300  hover:cursor-pointer px-3 py-1 rounded bg-blue-500 "
+                      className="text-white  mt-3 hover:bg-blue-300  hover:cursor-pointer px-3 py-1 rounded bg-blue-500 "
                     >
                       View
                     </button>
@@ -273,37 +279,39 @@ const Employees = () => {
         {showView && viewEmployee && (
           <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center">
             <div className="bg-white p-6 rounded-lg w-[400px]">
-              <h2 className="text-xl font-bold mb-4">Employee Details</h2>
+              <h2 className="text-xl font-bold mb-4 dark:text-black  ">
+                Employee Details
+              </h2>
 
               <div>
                 <div>
-                  <strong>Name:</strong>
-                  <p className="border border-gray-200 p-3 rounded">
+                  <strong className="dark:text-gray-500">Name:</strong>
+                  <p className="border border-gray-200 p-3 rounded dark:text-black">
                     {" "}
                     {viewEmployee.name}
                   </p>
                 </div>
                 <div>
-                  <strong>Position:</strong>
-                  <p className="border border-gray-200 p-3 rounded">
+                  <strong className="dark:text-gray-500">Position:</strong>
+                  <p className="border border-gray-200 p-3 rounded dark:text-black">
                     {" "}
                     {viewEmployee.position}
                   </p>
                   <div>
-                    <strong>Since:</strong>
-                    <p className="border border-gray-200 p-3 rounded">
+                    <strong className="dark:text-gray-500">Since:</strong>
+                    <p className="border border-gray-200 p-3 rounded dark:text-black">
                       {new Date(viewEmployee.since).toLocaleDateString()}
                     </p>
                   </div>
                   <div>
-                    <strong>Salary:</strong>
-                    <p className="border border-gray-200 p-3 rounded">
+                    <strong className="dark:text-gray-500">Salary:</strong>
+                    <p className="border border-gray-200 p-3 rounded dark:text-black">
                       {" "}
                       Rs {viewEmployee.salary}
                     </p>
                   </div>
                   <button
-                    className="bg-slate-700 text-white px-4 py-2 rounded mt-2 cursor-pointer"
+                    className="bg-slate-800 text-white px-4 py-2 rounded mt-2 cursor-pointer dark:text-white hover:bg-slate-700"
                     onClick={() => setShowView(false)}
                   >
                     Close
@@ -314,7 +322,7 @@ const Employees = () => {
           </div>
         )}
       </div>
-    </div>
+    </Card>
   );
 };
 
