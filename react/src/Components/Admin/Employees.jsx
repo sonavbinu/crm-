@@ -17,9 +17,26 @@ const Employees = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
 
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  const [countryId, setCountryId] = useState("");
+  const [stateId, setStateId] = useState("");
+  const [cityId, setCityId] = useState("");
+
   useEffect(() => {
     fetchEmployees();
   }, []);
+
+  useEffect(() => {
+    fetchCountries();
+  }, []);
+
+  const fetchCountries = async () => {
+    const res = await api.get("/country");
+    setCountries(res.data);
+  };
 
   const handleAdd = async () => {
     try {
@@ -62,6 +79,11 @@ const Employees = () => {
 
   const handleView = (employee) => {
     setViewEmployee(employee);
+
+    setCountryId(employee.countryId?._id || "");
+    setStateId(employee.stateId?._id || "");
+    setCityId(employee.cityId || "");
+
     setShowView(true);
   };
   const handleEdit = (employee) => {
@@ -88,6 +110,42 @@ const Employees = () => {
       fetchEmployees();
       setDeleteIndex(null);
       setShowDeleteModal(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleCountryChange = async (id) => {
+    console.log("Country selected:", id);
+    setCountryId(id);
+
+    const res = await api.get(`/state/country/${id}`);
+    console.log("States:", res.data);
+
+    setStates(res.data);
+
+    setStateId("");
+    setCityId("");
+    setCities([]);
+  };
+
+  const handleStateChange = async (id) => {
+    setStateId(id);
+
+    const res = await api.get(`/city/state/${id}`);
+    setCities(res.data);
+
+    setCityId("");
+  };
+  const saveLocation = async () => {
+    try {
+      await api.put(`/employees/${viewEmployee._id}`, {
+        countryId,
+        stateId,
+        cityId,
+      });
+
+      alert("Location updated");
+      fetchEmployees();
     } catch (error) {
       console.error(error);
     }
@@ -310,6 +368,47 @@ const Employees = () => {
                       {" "}
                       Rs {viewEmployee.salary}
                     </p>
+                  </div>
+                  <div>
+                    <select
+                      value={countryId}
+                      onChange={(e) => handleCountryChange(e.target.value)}
+                    >
+                      <option value="">Select Country</option>
+                      {countries.map((country) => (
+                        <option value={country._id} key={country._id}>
+                          {country.name}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      value={stateId}
+                      onChange={(e) => handleStateChange(e.target.value)}
+                    >
+                      <option value="">Select State</option>
+                      {states.map((state) => (
+                        <option value={state._id} key={state._id}>
+                          {state.name}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      value={cityId}
+                      onChange={(e) => handleCityChange(e.target.value)}
+                    >
+                      <option value="">Select City</option>
+                      {cities.map((city) => (
+                        <option value={city._id} key={city._id}>
+                          {city.name}
+                        </option>
+                      ))}
+                    </select>
+                    <button
+                      className="bg-green-600 text-white px-4 py-2 rounded mt-2"
+                      onClick={saveLocation}
+                    >
+                      Save Location
+                    </button>
                   </div>
                   <button
                     className="bg-slate-800 text-white px-4 py-2 rounded mt-2 cursor-pointer dark:text-white hover:bg-slate-700"

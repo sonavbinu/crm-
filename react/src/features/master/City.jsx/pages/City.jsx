@@ -7,6 +7,7 @@ import {
   updateCity,
   deleteCity,
 } from "../services/cityService";
+import api from "../../../../api/axios";
 
 const City = () => {
   const [name, setName] = useState("");
@@ -17,6 +18,23 @@ const City = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
 
+  const [states, setStates] = useState([]);
+  const [stateId, setStateId] = useState("");
+
+  useEffect(() => {
+    fetchStates();
+  }, []);
+
+  const fetchStates = async () => {
+    try {
+      const res = await api.get("/state");
+      console.log("State:", res.data);
+      setCity(res.data);
+    } catch (error) {
+      console.log("State fetch error:", error);
+    }
+  };
+
   useEffect(() => {
     fetchCity();
   }, []);
@@ -24,9 +42,9 @@ const City = () => {
   const handleAdd = async () => {
     try {
       if (edit) {
-        await updateCity(edit, { name, code });
+        await updateCity(edit, { name, code, stateId });
       } else {
-        await addCity({ name, code });
+        await addCity({ name, code, stateId });
       }
 
       fetchCity();
@@ -86,6 +104,17 @@ const City = () => {
     resetForm();
     setShowForm(true);
   };
+
+  const handleSave = async () => {
+    await api.post("/city/add", {
+      name,
+      code,
+      countryId,
+    });
+
+    fetchCity();
+    setIsOpen(false);
+  };
   return (
     <div>
       <div className="flex justify-between items-center px-2">
@@ -95,7 +124,7 @@ const City = () => {
         <div className="flex justify-end p-2 w-full">
           <button
             onClick={openAddForm}
-            className="bg-slate-600 rounded-xl px-4 py-2 text-white hover:shadow-xl hover:bg-slate-400 cursor-pointer text-center"
+            className="bg-slate-900 rounded-xl px-4 py-2 text-white hover:shadow-xl hover:bg-slate-700 cursor-pointer text-center"
           >
             Add City
           </button>
@@ -110,15 +139,18 @@ const City = () => {
           edit={edit}
           onSave={handleAdd}
           onClose={closeForm}
+          states={states}
+          setStateId={setStateId}
+          stateId={stateId}
         />
       )}
-
+      <p>States COunt:{states.length}</p>
       <div className="flex justify-center items-center p-2 flex-col items-center mt-4 gap-10">
         <div className="flex w-full">
           <div className="w-full">
             <table className=" bg-white w-full">
               <thead>
-                <tr className="text-white bg-slate-700">
+                <tr className="text-white bg-slate-900">
                   <th className="border ">#</th>
                   <th className="border p-4">City Name</th>
                   <th className="border ">City Code</th>

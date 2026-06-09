@@ -141,7 +141,7 @@ const Country = () => {
                     </td>
                   </tr>
                 ) : (
-                  countries.map((country, index) => (
+                  countries?.map((country, index) => (
                     <tr
                       key={country._id}
                       className="hover:bg-gray-50 transition"

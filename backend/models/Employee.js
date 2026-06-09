@@ -13,7 +13,22 @@ const employeeSchema = new mongoose.Schema({
 
   leaveBalance: {
     type: Number,
-    default: 12,
+    default: 30,
+  },
+
+  countryId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Country",
+  },
+
+  stateId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "State",
+  },
+
+  cityId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "City",
   },
 });
 

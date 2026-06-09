@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
+import api from "../../../../api/axios";
 
 const StateFormModal = ({
   name,
   code,
+  countryId,
+  countries = [],
+  setCountryId,
   setName,
   edit,
   setCode,
@@ -12,8 +16,31 @@ const StateFormModal = ({
   return (
     <div>
       <div className="flex flex-col justify-center items-center gap-2 fixed inset-0 bg-black/30 backdrop-blur-sm z-50">
-        <div className="border border-gray-300 px-6 py-3 bg-white rounded-lg ">
+        <div className="border border-gray-300 px-6 py-3 bg-white rounded-lg w-full max-w-md shadow-lg">
           <div className="p-2">
+            <div>
+              <h2 className="text-xl font-bold  mb-4">
+                {edit ? "Edit State" : "Add State"}
+              </h2>
+              <div className="mb-4">
+                <label className="block mb-1 font-medium">Country</label>
+                <select
+                  value={countryId}
+                  onChange={(e) => setCountryId(e.target.value)}
+                  className="w-full border p-2 rounded"
+                >
+                  <option value="">Select Country</option>
+
+                  {countries.map((country) => (
+                    <option value={country._id} key={country._id}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-3"></div>
+            </div>
             <label>State Name</label>
             <input
               type="text"

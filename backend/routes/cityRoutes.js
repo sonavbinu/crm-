@@ -5,11 +5,12 @@ const City = require("../models/City");
 //add city
 router.post("/add", async (req, res) => {
   try {
-    const { name, code } = req.body;
+    const { name, code, stateId } = req.body;
 
     const city = new City({
       name,
       code,
+      stateId,
     });
     await city.save();
 
@@ -38,11 +39,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+r;
+
 //test
 router.get("/test", (req, res) => {
   res.send("city route working");
 });
 
+router.get("/state/:stateId", async (req, res) => {
+  const cities = await City.find({
+    stateId: req.params.stateId,
+  });
+  res.json(cities);
+});
 //update city
 router.put("/:id", async (req, res) => {
   try {

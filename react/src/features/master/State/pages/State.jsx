@@ -8,6 +8,7 @@ import {
 } from "../services/stateService";
 import StateFormModal from "../components/StateFormModal";
 import DeleteStateFormModal from "../components/DeleteStateFormModal";
+import api from "../../../../api/axios";
 
 const State = () => {
   const [name, setName] = useState("");
@@ -18,6 +19,23 @@ const State = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
 
+  const [countries, setCountries] = useState([]);
+  const [countryId, setCountryId] = useState("");
+
+  useEffect(() => {
+    fetchCountries();
+  }, []);
+
+  const fetchCountries = async () => {
+    try {
+      const res = await api.get("/country");
+      console.log("Countries:", res.data);
+      setCountries(res.data);
+    } catch (error) {
+      console.log("Country fetch error:", error);
+    }
+  };
+
   useEffect(() => {
     fetchState();
   }, []);
@@ -25,14 +43,21 @@ const State = () => {
   const handleAdd = async () => {
     try {
       if (edit) {
+        console.log({
+          name,
+          code,
+          countryId,
+        });
         await updateStates(edit, {
           name,
           code,
+          countryId,
         });
       } else {
         await addStates({
           name,
           code,
+          countryId,
         });
       }
       fetchState();
@@ -89,6 +114,17 @@ const State = () => {
     resetForm();
     setShowForm(true);
   };
+
+  const handleSave = async () => {
+    await api.post("/state/add", {
+      name,
+      code,
+      countryId,
+    });
+
+    fetchStates();
+    setIsOpen(false);
+  };
   return (
     <div>
       <div className="flex justify-between items-center px-2">
@@ -113,8 +149,13 @@ const State = () => {
           edit={edit}
           onSave={handleAdd}
           onClose={closeForm}
+          countries={countries}
+          setCountryId={setCountryId}
+          countryId={countryId}
         />
       )}
+
+      <p>Countries Count:{countries.length}</p>
 
       <div className="flex justify-center  flex-col items-center p-2 mt-4 gap-10">
         <div className="flex w-full">

@@ -35,7 +35,7 @@ const Sidebar = () => {
         </div>{" "}
         {/* Navigation */}
         <nav className="p-4">
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-2 scroll">
             {user?.role === "admin" && (
               <>
                 <li>

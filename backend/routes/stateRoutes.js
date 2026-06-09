@@ -5,11 +5,12 @@ const State = require("../models/State");
 //add state
 router.post("/add", async (req, res) => {
   try {
-    const { name, code } = req.body;
+    const { name, code, countryId } = req.body;
 
     const state = new State({
       name,
       code,
+      countryId,
     });
     await state.save();
 
@@ -41,6 +42,13 @@ router.get("/", async (req, res) => {
 //test
 router.get("/test", (req, res) => {
   res.send("state route working");
+});
+
+router.get("/country/:countryId", async (req, res) => {
+  const states = await State.find({
+    countryId: req.params.countryId,
+  });
+  res.json(states);
 });
 
 //update state
