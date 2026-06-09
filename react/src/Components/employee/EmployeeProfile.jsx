@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Card from "../Components/Card";
+import api from "../../api/axios";
 
 const EmployeeProfile = () => {
   const [employee, setEmployee] = useState(null);
@@ -13,9 +14,7 @@ const EmployeeProfile = () => {
     try {
       const user = JSON.parse(localStorage.getItem("currentUser"));
 
-      const res = await axios.get(
-        `http://localhost:5000/api/employees/user/${user._id}`,
-      );
+      const res = await api.get(`/employees/user/${user._id}`);
       setEmployee(res.data);
     } catch (error) {
       console.log(error);

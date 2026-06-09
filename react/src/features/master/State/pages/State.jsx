@@ -91,15 +91,14 @@ const State = () => {
   };
   return (
     <div>
-      <Navbar />
       <div className="flex justify-between items-center px-2">
-        <h1 className="text-3xl font-bold text-gray-800 mt-2 w-full">
+        <h1 className="text-4xl font-bold text-gray-900 mt-2 w-full">
           State Management
         </h1>
         <div className="flex justify-end p-2 w-full">
           <button
             onClick={openAddForm}
-            className="bg-slate-600 rounded-lg p-2 text-white hover:shadow-xl hover:bg-slate-400 cursor-pointer "
+            className="bg-slate-800 rounded-lg p-2 text-white hover:shadow-xl hover:bg-slate-600 cursor-pointer "
           >
             Add State
           </button>
@@ -122,7 +121,7 @@ const State = () => {
           <div className="w-full">
             <table className=" bg-white  w-full">
               <thead>
-                <tr className=" bg-slate-700 text-white ">
+                <tr className=" bg-slate-900 text-white ">
                   <th className="border">#</th>
                   <th className="border p-4">State Name</th>
                   <th className="border p-2 ">State Code</th>
@@ -141,7 +140,7 @@ const State = () => {
                     </td>
                     <td className=" p-2 border flex justify-around border-gray-300 ">
                       <button
-                        className="text-green-500 cursor-pointer hover:bg-green-100 hover:text-green-700 px-4 py-1 bg-green-200 rounded "
+                        className="text-white cursor-pointer hover:bg-green-400 hover:text-green-700 px-4 py-1 bg-green-500 rounded "
                         onClick={() => handleEdit(states)}
                       >
                         Edit
@@ -151,7 +150,7 @@ const State = () => {
                           setDeleteIndex(states._id);
                           setShowDeleteModal(true);
                         }}
-                        className="text-red-500 cursor-pointer hover:bg-red-100 hover:text-red-700 bg-red-200 px-4 py-1 rounded"
+                        className="text-white cursor-pointer hover:bg-red-400 hover:text-red-700 bg-red-500 px-4 py-1 rounded"
                       >
                         Delete
                       </button>

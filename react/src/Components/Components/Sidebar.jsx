@@ -60,6 +60,11 @@ const Sidebar = () => {
                     Leave Requests
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink to="/admin/master" className={navClass}>
+                    Master
+                  </NavLink>
+                </li>
               </>
             )}
 

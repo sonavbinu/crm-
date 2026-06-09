@@ -96,14 +96,13 @@ const Country = () => {
   };
   return (
     <div>
-      <Navbar />
       <div className="flex justify-between items-center  px-2">
-        <h1 className="text-4xl p-4 font-bold text-gray-800 mt-2  w-full">
+        <h1 className="text-4xl p-4 font-bold text-gray-900 mt-2  w-full">
           Country Management
         </h1>
         <div className="flex justify-end   p-2 w-full">
           <button
-            className="bg-slate-600 rounded-xl w-auto px-4 py-2 text-white  hover:bg-slate-500 cursor-pointer  flex items-center "
+            className="bg-slate-900 rounded-xl w-auto px-4 py-2 text-white  hover:bg-slate-700 cursor-pointer  flex items-center "
             onClick={openAddForm}
           >
             Add country
@@ -127,7 +126,7 @@ const Country = () => {
           <div className=" w-full">
             <table className="  bg-white w-full">
               <thead>
-                <tr className="text-white bg-slate-700 ">
+                <tr className="text-white bg-slate-900 ">
                   <th className="border ">#</th>
                   <th className="border p-4 ">Country Name</th>
                   <th className="border p-2">Code</th>
@@ -159,13 +158,13 @@ const Country = () => {
 
                       <td className=" p-2 border border-gray-300  flex justify-around ">
                         <button
-                          className="text-green-700 cursor-pointer hover:bg-green-100 px-3 py-1 bg-green-200 rounded"
+                          className="text-white cursor-pointer hover:bg-green-400 px-3 py-1 bg-green-500 rounded"
                           onClick={() => handleEdit(country)}
                         >
                           Edit
                         </button>
                         <button
-                          className="text-red-500 cursor-pointer hover:text-red-700 hover:bg-red-100 px-3 py-1 bg-red-200 rounded"
+                          className="text-white cursor-pointer  hover:bg-red-400 px-3 py-1 bg-red-500 rounded"
                           onClick={() => {
                             setDeleteIndex(country._id);
                             setShowDeleteModal(true);

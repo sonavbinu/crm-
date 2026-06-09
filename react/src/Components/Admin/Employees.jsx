@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardLayout from "../Layout/DashboardLayout";
 import Card from "../Components/Card";
+import api from "../../api/axios";
 
 const Employees = () => {
   const [name, setName] = useState("");
@@ -23,14 +24,14 @@ const Employees = () => {
   const handleAdd = async () => {
     try {
       if (editIndex) {
-        await axios.put(`http://localhost:5000/api/employees/${editIndex}`, {
+        await api.put(`/employees/${editIndex}`, {
           name,
           position,
           since,
           salary,
         });
       } else {
-        await axios.post("http://localhost:5000/api/employees/add", {
+        await api.post("/employees/add", {
           name,
           position,
           since,
@@ -51,7 +52,7 @@ const Employees = () => {
   };
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/employees");
+      const response = await api.get("/employees");
 
       setDetails(response.data);
     } catch (error) {
@@ -83,7 +84,7 @@ const Employees = () => {
   };
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/employees/${deleteIndex}`);
+      await api.delete(`/employees/${deleteIndex}`);
       fetchEmployees();
       setDeleteIndex(null);
       setShowDeleteModal(false);

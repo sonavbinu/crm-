@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../../../Components/Navbar";
 import CityFormModal from "../components/CityFormModal";
 import DeleteCityModal from "../components/DeleteCityModal";
 import {
@@ -89,7 +88,6 @@ const City = () => {
   };
   return (
     <div>
-      <Navbar />
       <div className="flex justify-between items-center px-2">
         <h1 className="text-4xl p-4 font-bold text-gray-800 mt-2 w-full">
           City Management
@@ -139,7 +137,7 @@ const City = () => {
                     </td>
                     <td className="flex  border p-2 justify-around  border-gray-300 ">
                       <button
-                        className="text-green-500 cursor-pointer hover:text-green-700 px-4 py-1  bg-green-200 rounded hover:bg-green-100 "
+                        className="text-white cursor-pointer hover:bg-green-400 px-3 py-1 bg-green-500 rounded "
                         onClick={() => handleEdit(cities)}
                       >
                         Edit
@@ -149,7 +147,7 @@ const City = () => {
                           setDeleteIndex(cities._id);
                           setShowDeleteModal(true);
                         }}
-                        className="text-red-500 cursor-pointer hover:text-red-700 px-4 py-1 bg-red-200 hover:bg-red-100 rounded"
+                        className="text-white cursor-pointer hover:bg-red-400 px-3 py-1 bg-red-500 rounded"
                       >
                         Delete
                       </button>

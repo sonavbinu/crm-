@@ -1,22 +1,23 @@
-import axios from "axios";
 import React, { useState } from "react";
 import Card from "../Components/Card";
+import api from "../../api/axios";
 
 const ApplyLeave = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [reason, setReason] = useState("");
 
-  const handleApply = async () => {
+  const handleApply = async (res, req) => {
     try {
       const user = JSON.parse(localStorage.getItem("currentUser"));
 
-      await axios.post("http://localhost:5000/api/leaves/apply", {
+      await api.post("/leaves/apply", {
         employeeId: user._id,
         startDate,
         endDate,
         reason,
       });
+      console.log(res.data);
 
       alert("Leave request submitted");
 

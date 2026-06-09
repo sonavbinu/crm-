@@ -41,6 +41,11 @@ const App = () => {
         <Route path="profile" element={<AdminProfile />} />
         <Route path="employees" element={<Employees />} />
         <Route path="leaves" element={<LeaveRequests />} />
+        <Route path="master" element={<Master />}>
+          <Route path="countries" element={<Country />} />
+          <Route path="state" element={<State />} />
+          <Route path="cities" element={<City />} />
+        </Route>
       </Route>
 
       {/* Employee Layout */}
@@ -60,10 +65,6 @@ const App = () => {
       </Route>
 
       {/* Other Routes */}
-      <Route path="/master" element={<Master />} />
-      <Route path="/countries" element={<Country />} />
-      <Route path="/state" element={<State />} />
-      <Route path="/cities" element={<City />} />
 
       {/* Default Route */}
       <Route path="/" element={<Navigate to="/login" replace />} />

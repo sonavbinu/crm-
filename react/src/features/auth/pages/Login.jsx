@@ -39,8 +39,8 @@ const Login = () => {
   };
 
   return (
-    <Card className="flex items-center justify-center flex-col bg-gradient-to-br from-slate-100 to-slate-200 px-4 min-h-screen">
-      <div className="border dark:bg-slate-800  p-8 flex flex-col gap-4 rounded-xl shadow-xl bg-slate-200 w-full h- max-w-md">
+    <Card className="flex items-center justify-center flex-col bg-gradient-to-br from-slate-100 to-slate-200 px-4 min-h-screen ">
+      <div className="border dark:bg-black  p-8 flex flex-col gap-4 justify-center rounded-xl shadow-xl bg-slate-200 w-full max-w-md">
         <div className="flex  justify-between">
           <h1 className="text-3xl font-bold text-gray-500 dark:text-white">
             Login

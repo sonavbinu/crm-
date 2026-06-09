@@ -3,6 +3,8 @@ const Employee = require("../models/Employee");
 
 // Apply Leave
 const applyLeave = async (req, res) => {
+  console.log("BODY:", req.body);
+  console.log("HEADERS:", req.headers);
   try {
     const { employeeId, startDate, endDate, reason } = req.body;
 
@@ -85,6 +87,8 @@ const approveLeave = async (req, res) => {
         message: "Not enough leave balance",
       });
     }
+    console.log("Leave Balance:", employee.leaveBalance);
+    console.log("Requested Days:", leave.days);
 
     const employees = await Employee.find();
     console.log(employees);
@@ -132,12 +136,22 @@ const rejectLeave = async (req, res) => {
 // Get Leaves of One Employee
 const getEmployeeLeaves = async (req, res) => {
   try {
-    const leaves = await Leave.find({
-      employeeId: req.params.employeeId,
+    const employee = await Employee.findOne({
+      userId: req.params.employeeId,
     });
+    if (!employee) {
+      return res.status(404).json({
+        message: "Employee not found",
+      });
+    }
+    const leaves = await Leave.find({
+      employeeId: employee._id,
+    }).sort({ createdAt: -1 });
 
     res.json(leaves);
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({
       message: error.message,
     });

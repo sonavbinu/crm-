@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Card from "../Components/Card";
+import api from "../../api/axios";
 
 const LeaveRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -10,19 +11,24 @@ const LeaveRequests = () => {
   }, []);
 
   const fetchRequests = async () => {
-    const res = await axios.get("http://localhost:5000/api/leaves");
+    const res = await api.get("/leaves");
     setRequests(res.data);
   };
   const approveLeave = async (id) => {
     console.log("Approving leave:", id);
     try {
-      const res = await axios.put(
-        `http://localhost:5000/api/leaves/approve/${id}`,
-      );
+      const res = await api.put(`/leaves/approve/${id}`);
+      alert("Leave Approved successfully");
       console.log(res.data);
       fetchRequests();
     } catch (error) {
+      alert(error.response?.data?.message || "Failed to approve leave");
+
       console.log("Approve Error:", error.response?.data);
+      console.log(
+        "Message:",
+        error.response?.data?.message || "Failed to approve leave",
+      );
       console.log("Status:", error.response?.status);
     }
 
@@ -30,9 +36,7 @@ const LeaveRequests = () => {
   };
   const rejectLeave = async (id) => {
     try {
-      const res = await axios.put(
-        `http://localhost:5000/api/leaves/reject/${id}`,
-      );
+      const res = await api.put(`/leaves/reject/${id}`);
       console.log(res.data);
       fetchRequests();
     } catch (error) {
