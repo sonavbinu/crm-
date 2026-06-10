@@ -33,7 +33,7 @@ const CityFormModal = ({
 
                   {states.map((state) => (
                     <option value={state._id} key={states._id}>
-                      {states.name}
+                      {state.name}
                     </option>
                   ))}
                 </select>

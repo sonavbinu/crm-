@@ -39,8 +39,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-r;
-
 //test
 router.get("/test", (req, res) => {
   res.send("city route working");

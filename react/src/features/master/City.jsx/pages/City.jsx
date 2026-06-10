@@ -29,7 +29,7 @@ const City = () => {
     try {
       const res = await api.get("/state");
       console.log("State:", res.data);
-      setCity(res.data);
+      setStates(res.data);
     } catch (error) {
       console.log("State fetch error:", error);
     }
@@ -78,6 +78,7 @@ const City = () => {
   const handleEdit = (city) => {
     setName(city.name);
     setCode(city.code);
+    setStateId(city.stateId || "");
     setEdit(city._id);
     setShowForm(true);
   };
@@ -109,7 +110,7 @@ const City = () => {
     await api.post("/city/add", {
       name,
       code,
-      countryId,
+      stateId,
     });
 
     fetchCity();
