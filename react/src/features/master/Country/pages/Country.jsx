@@ -21,9 +21,15 @@ const Country = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
 
+  const [filterName, setFilterName] = useState("");
+
   useEffect(() => {
     fetchCountry();
   }, []);
+
+  const filteredCOuntries = countries.filter((country) =>
+    country.name.toLowerCase().includes(filterName.toLowerCase()),
+  );
 
   const handleAdd = async () => {
     try {
@@ -108,6 +114,15 @@ const Country = () => {
             Add country
           </button>
         </div>
+      </div>{" "}
+      <div>
+        <input
+          type="text"
+          placeholder="Search Country..."
+          value={filterName}
+          onChange={(e) => setFilterName(e.target.value)}
+          className="border border-gray-300 rounded p-2 w-64"
+        />
       </div>
       {showForm && (
         <CountryFormModal
@@ -141,7 +156,7 @@ const Country = () => {
                     </td>
                   </tr>
                 ) : (
-                  countries?.map((country, index) => (
+                  filteredCOuntries?.map((country, index) => (
                     <tr
                       key={country._id}
                       className="hover:bg-gray-50 transition"
