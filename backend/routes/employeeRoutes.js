@@ -34,7 +34,10 @@ router.post("/add", async (req, res) => {
 //get employees
 router.get("/", async (req, res) => {
   try {
-    const employees = await Employee.find();
+    const employees = await Employee.find()
+      .populate("countryId")
+      .populate("stateId")
+      .populate("cityId");
 
     res.status(200).json(employees);
   } catch (error) {
@@ -74,15 +77,18 @@ router.get("/test", (req, res) => {
 
 router.put("/:id", async (req, res) => {
   console.log("PUT HIT");
-  console.log(req.params.id);
+  console.log("ID:", req.params.id);
+  console.log("BODY:", req.body);
   try {
     const updatedEmployee = await Employee.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true },
     );
+    console.log(updatedEmployee);
     res.status(200).json(updatedEmployee);
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: error.message,
     });

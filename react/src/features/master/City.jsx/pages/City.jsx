@@ -21,6 +21,22 @@ const City = () => {
   const [states, setStates] = useState([]);
   const [stateId, setStateId] = useState("");
 
+  const [countries, setCountries] = useState([]);
+  const [countryId, setCountryId] = useState("");
+
+  useEffect(() => {
+    fetchCountries();
+  }, []);
+
+  const fetchCountries = async () => {
+    try {
+      const res = await api.get("/country");
+      setCountries(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchStates();
   }, []);
@@ -116,6 +132,18 @@ const City = () => {
     fetchCity();
     setIsOpen(false);
   };
+
+  const handleCountryChange = async (id) => {
+    setCountryId(id);
+
+    try {
+      const res = await api.get(`/state/country/${id}`);
+      setStates(res.data);
+      setStateId("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
       <div className="flex justify-between items-center px-2">
@@ -140,6 +168,9 @@ const City = () => {
           edit={edit}
           onSave={handleAdd}
           onClose={closeForm}
+          countries={countries}
+          countryId={countryId}
+          setCountryId={handleCountryChange}
           states={states}
           setStateId={setStateId}
           stateId={stateId}

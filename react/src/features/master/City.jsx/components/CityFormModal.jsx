@@ -11,6 +11,9 @@ const CityFormModal = ({
   states = [],
   stateId,
   setStateId,
+  countryId,
+  setCountryId,
+  countries = [],
 }) => {
   return (
     <div>
@@ -22,6 +25,22 @@ const CityFormModal = ({
                 {edit ? "Edit City" : "Add City"}
               </h2>
 
+              <div className="flex  flex-col">
+                <label>Country</label>
+                <select
+                  value={countryId}
+                  onChange={(e) => setCountryId(e.target.value)}
+                  className="border p-2 rounded"
+                >
+                  <option value="">Select Country</option>
+
+                  {countries.map((country) => (
+                    <option value={country._id} key={country._id}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="mb-4">
                 <label className="block mb-1 font-medium">State</label>
                 <select

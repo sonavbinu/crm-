@@ -71,18 +71,34 @@ const Employees = () => {
     try {
       const response = await api.get("/employees");
 
+      console.log(response.data);
+
       setDetails(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleView = (employee) => {
+  const handleView = async (employee) => {
     setViewEmployee(employee);
 
-    setCountryId(employee.countryId?._id || "");
-    setStateId(employee.stateId?._id || "");
-    setCityId(employee.cityId || "");
+    const country = employee.countryId?._id || "";
+    const state = employee.stateId?._id || "";
+    const city = employee.cityId?._id || "";
+
+    setCountryId(country);
+    setStateId(state);
+    setCityId(city);
+
+    if (country) {
+      const stateRes = await api.get(`/state/country/${country}`);
+      setStates(stateRes.data);
+    }
+
+    if (state) {
+      const cityRes = await api.get(`/city/state/${state}`);
+      setCities(cityRes.data);
+    }
 
     setShowView(true);
   };
@@ -132,22 +148,40 @@ const Employees = () => {
     setStateId(id);
 
     const res = await api.get(`/city/state/${id}`);
+    console.log("Cities:", res.data);
     setCities(res.data);
 
     setCityId("");
   };
+
+  const handleCityChange = (id) => {
+    setCityId(id);
+  };
+
   const saveLocation = async () => {
+    console.log({
+      countryId,
+      stateId,
+      cityId,
+    });
     try {
       await api.put(`/employees/${viewEmployee._id}`, {
         countryId,
         stateId,
         cityId,
       });
+      const res = await api.get("/employees");
+      setDetails(res.data);
 
+      const updatedEMployee = res.data.find(
+        (emp) => emp._id === viewEmployee._id,
+      );
+
+      setViewEmployee(updatedEMployee);
       alert("Location updated");
       fetchEmployees();
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -370,6 +404,7 @@ const Employees = () => {
                     </p>
                   </div>
                   <div>
+                    <p>Total cities:{cities.length}</p>
                     <select
                       value={countryId}
                       onChange={(e) => handleCountryChange(e.target.value)}
@@ -409,6 +444,24 @@ const Employees = () => {
                     >
                       Save Location
                     </button>
+                  </div>
+                  <div className="mt-3">
+                    <strong>Location:</strong>
+
+                    <div className="flex flex-col border border-gray-300 p-2 rounded">
+                      <p>
+                        Country:
+                        {viewEmployee.countryId?.name || "Not Selected"}
+                      </p>
+                      <p>
+                        State:
+                        {viewEmployee.stateId?.name || "Not Selected"}
+                      </p>
+                      <p>
+                        City:
+                        {viewEmployee.cityId?.name || "Not Selected"}
+                      </p>
+                    </div>
                   </div>
                   <button
                     className="bg-slate-800 text-white px-4 py-2 rounded mt-2 cursor-pointer dark:text-white hover:bg-slate-700"

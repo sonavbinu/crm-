@@ -44,51 +44,62 @@ const LeaveRequests = () => {
     }
   };
   return (
-    <Card className="flex flex-col  gap-10">
-      <h1 className="text-3xl font-bold flex  justify-between  items-center">
-        Leave Requests
-      </h1>
-      <table className="border border-gray-300 w-full  ">
-        <thead>
-          <tr className="border border-gray-300 bg-slate-800  text-white">
-            <th className="border border-gray-300 p-3">Employee</th>
-            <th className="border border-gray-300 p-2">Days</th>
-            <th className="border border-gray-300 p-2">Reason</th>
-            <th className="border border-gray-300 p-2">Status</th>
-            <th className="border border-gray-300 p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {requests.map((leave) => (
-            <tr
-              key={leave._id}
-              className="hover:bg-gray-50  dark:hover:bg-gray-500"
-            >
-              <td className="border border-gray-300 ">
-                {leave.employeeId?.name}
-              </td>
-              <td className="border border-gray-300 p-3 ">{leave.days}</td>
-              <td className="border border-gray-300 p-2 ">{leave.reason}</td>
-              <td className="border border-gray-300 p-2 ">{leave.status}</td>
+    <Card>
+      <div className="flex flex-col  gap-10">
+        <h1 className="text-3xl font-bold flex  justify-between  items-center">
+          Leave Requests
+        </h1>{" "}
+        <div className="overflow-x-auto">
+          <table className="border border-gray-300 min-w-full  ">
+            <thead>
+              <tr className="border border-gray-300 bg-slate-800  text-white">
+                <th className="border border-gray-300 p-3">Employee</th>
+                <th className="border border-gray-300 p-2">Days</th>
+                <th className="border border-gray-300 p-2">Reason</th>
+                <th className="border border-gray-300 p-2">Status</th>
+                <th className="border border-gray-300 p-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="md:hidden-space-y-4">
+              {requests.map((leave) => (
+                <tr
+                  key={leave._id}
+                  className="hover:bg-gray-50  dark:hover:bg-gray-500"
+                >
+                  <td className="border border-gray-300 p-2">
+                    {leave.employeeId?.name}
+                  </td>
+                  <td className="border border-gray-300 p-3 ">{leave.days}</td>
+                  <td className="border border-gray-300 p-2 ">
+                    {leave.reason}
+                  </td>
+                  <td className="border border-gray-300 p-2 ">
+                    {leave.status}
+                  </td>
 
-              <td className="flex justify-around items-center">
-                <button
-                  className="bg-green-500 mt-1 text-white p-2 rounded-xl hover:bg-green-300 cursor-pointer"
-                  onClick={() => approveLeave(leave._id)}
-                >
-                  Approve
-                </button>
-                <button
-                  className="bg-red-500 mt-1 text-white p-2 rounded-xl hover:bg-red-300 cursor-pointer"
-                  onClick={() => rejectLeave(leave._id)}
-                >
-                  Reject
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  <td className="flex justify-around items-center border-b p-3 gap-2 border-gray-300">
+                    <button
+                      className="bg-green-500 mt-1 text-white p-2 rounded-xl hover:bg-green-300 cursor-pointer"
+                      onClick={() => approveLeave(leave._id)}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      className="bg-red-500 mt-1 text-white p-2 rounded-xl hover:bg-red-300 cursor-pointer"
+                      onClick={() => rejectLeave(leave._id)}
+                    >
+                      Reject
+                    </button>
+                    <button className="bg-purple-500 mt-1 text-white px-4 py-1 text-center rounded-xl hover:bg-purple-300 cursor-pointer">
+                      x
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </Card>
   );
 };

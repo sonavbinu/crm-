@@ -30,7 +30,12 @@ router.post("/add", async (req, res) => {
 //get city
 router.get("/", async (req, res) => {
   try {
-    const city = await City.find();
+    const city = await City.find().populate({
+      path: "stateId",
+      populate: {
+        path: "countryId",
+      },
+    });
     res.status(200).json(city);
   } catch (error) {
     res.status(500).json({
@@ -62,6 +67,10 @@ router.put("/:id", async (req, res) => {
       message: error.message,
     });
   }
+});
+router.get("/all", async (req, res) => {
+  const cities = await City.find();
+  res.json(cities);
 });
 
 //delete city
