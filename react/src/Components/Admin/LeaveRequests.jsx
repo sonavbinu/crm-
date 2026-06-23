@@ -43,6 +43,24 @@ const LeaveRequests = () => {
       console.log("Reject Error:", error.response?.data);
     }
   };
+  const deleteLeave = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this leave request?",
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const res = await api.delete(`/leave/${id}`);
+      alert("leave request deleted successfully");
+      console.log(res.data);
+
+      fetchRequests();
+    } catch (error) {
+      console.log("Delete Error:", error.response?.data);
+      alert(error.response?.data?.message || "Failed to delete leave requests");
+    }
+  };
   return (
     <Card>
       <div className="flex flex-col  gap-10">
@@ -90,7 +108,10 @@ const LeaveRequests = () => {
                     >
                       Reject
                     </button>
-                    <button className="bg-purple-500 mt-1 text-white px-4 py-1 text-center rounded-xl hover:bg-purple-300 cursor-pointer">
+                    <button
+                      className="bg-blue-500 mt-1 text-white px-4 py-1 text-center rounded-xl hover:bg-purple-300 cursor-pointer"
+                      onClick={() => deleteLeave(leave._id)}
+                    >
                       x
                     </button>
                   </td>

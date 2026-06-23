@@ -22,6 +22,8 @@ const State = () => {
   const [countries, setCountries] = useState([]);
   const [countryId, setCountryId] = useState("");
 
+  const [filterName, setFilterName] = useState("");
+
   useEffect(() => {
     fetchCountries();
   }, []);
@@ -42,35 +44,44 @@ const State = () => {
 
   const handleAdd = async () => {
     try {
-      if (edit) {
-        console.log({
-          name,
-          code,
-          countryId,
-        });
-        await updateStates(edit, {
-          name,
-          code,
-          countryId,
-        });
-      } else {
-        await addStates({
-          name,
-          code,
-          countryId,
-        });
+      if (!name.trim()) {
+        alert("State name is required");
+        return;
       }
-      fetchState();
+
+      if (!code.trim()) {
+        alert("State code is required");
+        return;
+      }
+
+      if (!countryId) {
+        alert("Please select a country");
+        return;
+      }
+
+      const payload = {
+        name,
+        code,
+        countryId,
+      };
+
+      if (edit) {
+        await updateStates(edit, payload);
+      } else {
+        await addStates(payload);
+      }
+
+      await fetchState();
       closeForm();
     } catch (error) {
       console.log(error);
     }
   };
-
   const resetForm = () => {
     setName("");
     setCode("");
     setEdit(null);
+    setCountryId("");
   };
 
   const closeForm = () => {
@@ -86,10 +97,13 @@ const State = () => {
     }
   };
 
-  const handleEdit = (state) => {
-    setName(state.name);
-    setCode(state.code);
-    setEdit(state._id);
+  const handleEdit = (stateData) => {
+    setName(stateData.name);
+    setCode(stateData.code);
+
+    setCountryId(stateData.countryId?._id || stateData.countryId || "");
+
+    setEdit(stateData._id);
     setShowForm(true);
   };
 
@@ -114,17 +128,10 @@ const State = () => {
     resetForm();
     setShowForm(true);
   };
+  const filteredStates = state.filter((item) =>
+    item?.name?.toLowerCase().includes(filterName.toLowerCase()),
+  );
 
-  const handleSave = async () => {
-    await api.post("/state/add", {
-      name,
-      code,
-      countryId,
-    });
-
-    fetchStates();
-    setIsOpen(false);
-  };
   return (
     <div>
       <div className="flex justify-between items-center px-2">
@@ -160,6 +167,19 @@ const State = () => {
       <div className="flex justify-center  flex-col items-center p-2 mt-4 gap-10">
         <div className="flex w-full">
           <div className="w-full">
+            <div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Search State..."
+                  value={filterName}
+                  onChange={(e) => {
+                    setFilterName(e.target.value);
+                  }}
+                  className="border border-gray-300 rounded p-2 w-64"
+                />
+              </div>
+            </div>
             <table className=" bg-white  w-full">
               <thead>
                 <tr className=" bg-slate-900 text-white ">
@@ -170,7 +190,7 @@ const State = () => {
                 </tr>
               </thead>
               <tbody>
-                {state.map((states, index) => (
+                {filteredStates.map((states, index) => (
                   <tr key={states._id} className="hover:bg-gray-50">
                     <td className="border border-gray-300 p-2">{index + 1}</td>
                     <td className="border p-2 border-gray-300">

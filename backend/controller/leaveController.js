@@ -158,10 +158,30 @@ const getEmployeeLeaves = async (req, res) => {
   }
 };
 
+const deleteLeave = async (req, res) => {
+  try {
+    const leave = await Leave.findByIdAndDelete(req.params.id);
+
+    if (!leave) {
+      return res.status(404).json({
+        message: "Leave request not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Leave request deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   applyLeave,
   getLeaves,
   approveLeave,
   rejectLeave,
   getEmployeeLeaves,
+  deleteLeave,
 };

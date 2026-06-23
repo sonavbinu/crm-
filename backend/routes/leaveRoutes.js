@@ -7,6 +7,7 @@ const {
   approveLeave,
   rejectLeave,
   getEmployeeLeaves,
+  deleteLeave,
 } = require("../controller/leaveController");
 
 const router = express.Router();
@@ -20,5 +21,7 @@ router.put("/approve/:id", approveLeave);
 router.put("/reject/:id", rejectLeave);
 
 router.get("/employee/:employeeId", getEmployeeLeaves);
+
+router.delete("/:id", deleteLeave);
 
 module.exports = router;
