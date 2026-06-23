@@ -8,13 +8,19 @@ router.post("/add", async (req, res) => {
   console.log("post/add hit");
   console.log(req.body);
   try {
-    const { name, position, since, salary } = req.body;
+    const { name, position, since, salary, countryId, stateId, cityId } =
+      req.body;
+    console.log("body:", req.body);
+    console.log("userid:", req.body.userId);
 
     const employee = new Employee({
       name,
       position,
       since,
       salary,
+      countryId,
+      stateId,
+      cityId,
     });
     await employee.save();
 
@@ -24,6 +30,8 @@ router.post("/add", async (req, res) => {
       employee,
     });
   } catch (error) {
+    console.log("Employee create error:");
+    console.log(error);
     res.status(500).json({
       success: false,
       message: error.message,

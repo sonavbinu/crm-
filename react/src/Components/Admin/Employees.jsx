@@ -25,6 +25,19 @@ const Employees = () => {
   const [stateId, setStateId] = useState("");
   const [cityId, setCityId] = useState("");
 
+  const [userId, setUserId] = useState("");
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    const res = await api.get("/users");
+    setUsers(res.data);
+  };
+
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -46,6 +59,9 @@ const Employees = () => {
           position,
           since,
           salary,
+          countryId,
+          stateId,
+          cityId,
         });
       } else {
         await api.post("/employees/add", {
@@ -53,6 +69,9 @@ const Employees = () => {
           position,
           since,
           salary,
+          countryId,
+          stateId,
+          cityId,
         });
       }
       fetchEmployees();
@@ -63,6 +82,9 @@ const Employees = () => {
       setSalary("");
       setEditIndex(null);
       setIsOpen(false);
+      setCountryId("");
+      setStateId("");
+      setCityId("");
     } catch (error) {
       console.error(error);
     }
@@ -102,16 +124,30 @@ const Employees = () => {
 
     setShowView(true);
   };
-  const handleEdit = (employee) => {
+  const handleEdit = async (employee) => {
     setName(employee.name || "");
     setPosition(employee.position || "");
     setSalary(employee.salary || "");
 
+    setCountryId(employee.countryId?._id || "");
+    setStateId(employee.stateId?._id || "");
+    setCityId(employee.cityId?._id || "");
     setSince(
       employee.since
         ? new Date(employee.since).toISOString().split("T")[0]
         : "",
     );
+
+    if (employee.countryId?._id) {
+      const stateRes = await api.get(
+        `/state/country/${employee.countryId?._id}`,
+      );
+      setStates(stateRes.data);
+    }
+    if (employee.stateId?._id) {
+      const cityRes = await api.get(`/city/state/${employee.stateId._id}`);
+      setCities(cityRes.data);
+    }
 
     setEditIndex(employee._id);
     setIsOpen(true);
@@ -225,6 +261,51 @@ const Employees = () => {
                     className="p-2 bg-white dark:bg-slate-800 text-black dark:text-white  border dark:border-slate-700 rounded-lg py-2 px-3 border-gray-400 rounded"
                   />
                 </div>
+              </div>
+              <div className="flex flex-col">
+                <label>Country</label>
+                <select
+                  value={countryId}
+                  onChange={(e) => handleCountryChange(e.target.value)}
+                  className="border border-gray-400 rounded p-2"
+                >
+                  <option>Select Country</option>
+                  {countries.map((country) => (
+                    <option key={country._id} value={country._id}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col">
+                <label>State</label>
+                <select
+                  value={stateId}
+                  onChange={(e) => handleStateChange(e.target.value)}
+                  className="border border-gray-400 rounded p-2"
+                >
+                  <option value="">Select State</option>
+                  {states.map((state) => (
+                    <option value={state._id} key={state._id}>
+                      {state.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col">
+                <label>City</label>
+                <select
+                  value={cityId}
+                  onChange={(e) => handleCityChange(e.target.value)}
+                  className="border border-gray-400 p-2"
+                >
+                  <option value="">Select City</option>
+                  {cities.map((city) => (
+                    <option value={city._id} key={city._id}>
+                      {city.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="flex justify-between">
                 <div className="flex flex-col">
@@ -346,7 +427,7 @@ const Employees = () => {
           <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-2xl p-6 w-[350px]">
               <div className="text-gray-600 mb-6">
-                <p>Are you sure you want to delete this country?</p>
+                <p>Are you sure you want to delete this employee?</p>
                 <div className="flex justify-end gap-3">
                   <button
                     className="px-4 py-2 bg-gray-500 rounded hover:bg-gray-300 text-white hover:text-black cursor-pointer"
