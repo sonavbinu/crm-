@@ -29,6 +29,12 @@ const Redux = () => {
           className="text-3xl font-bold p-10 border border-gray-300 rounded-3xl transition-all duration-300 cursor-pointer hover:shadow-2xl"
         >
           Cart
+        </h2>{" "}
+        <h2
+          onClick={() => navigate("/admin/redux/notification")}
+          className="text-3xl font-bold p-10 border border-gray-300 rounded-3xl transition-all duration-300 cursor-pointer hover:shadow-2xl"
+        >
+          Notification
         </h2>
       </div>
       <Outlet />

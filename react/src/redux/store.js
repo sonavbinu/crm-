@@ -3,6 +3,7 @@ import counterReducer from "./slice/counterSlice";
 import todoReducer from "./slice/todoSlice";
 import userReducer from "./slice/userSlice";
 import cartReducer from "./slice/cartSlice";
+import notificationReducer from "./slice/notificationSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     todo: todoReducer,
     user: userReducer,
     cart: cartReducer,
+    notification: notificationReducer,
   },
 });
