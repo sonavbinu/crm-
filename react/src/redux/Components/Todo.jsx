@@ -20,7 +20,7 @@ const Todo = () => {
       <h2 className="text-3xl font-bold">Todo List</h2>
       <div className="flex  gap-3">
         <input
-          className="border "
+          className="border border-gray-400 rounded "
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -37,7 +37,7 @@ const Todo = () => {
       <ul className="flex flex-col gap-2  p-10 rounded ">
         {todos.map((todo) => (
           <li
-            className="border border-gray-400 flex-1 flex p-2 rounded items-center gap-6 justify-between"
+            className="border border-gray-300 flex-1 flex p-2 rounded items-center gap-6 justify-between w-70"
             key={todo.id}
           >
             {todo.text}
