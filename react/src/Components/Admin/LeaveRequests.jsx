@@ -51,7 +51,7 @@ const LeaveRequests = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await api.delete(`/leave/${id}`);
+      const res = await api.delete(`/leaves/${id}`);
       alert("leave request deleted successfully");
       console.log(res.data);
 
@@ -109,10 +109,10 @@ const LeaveRequests = () => {
                       Reject
                     </button>
                     <button
-                      className="bg-blue-500 mt-1 text-white px-4 py-1 text-center rounded-xl hover:bg-purple-300 cursor-pointer"
+                      className="bg-blue-500 mt-1 text-white p-2 py-1 text-center flex items-center rounded-xl hover:bg-blue-300 cursor-pointer"
                       onClick={() => deleteLeave(leave._id)}
                     >
-                      x
+                      Delete
                     </button>
                   </td>
                 </tr>

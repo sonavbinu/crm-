@@ -74,16 +74,24 @@ const approveLeave = async (req, res) => {
         message: "Leave not found",
       });
     }
+
     const employee = await Employee.findById(leave.employeeId);
-    console.log("Employee found:", employee);
+
+    console.log("=================================");
+    console.log("Employee Name:", employee?.name);
+    console.log("Leave Balance:", employee?.leaveBalance);
+    console.log("Requested Days:", leave?.days);
+    console.log("Employee ID:", employee?._id);
+    console.log("=================================");
+
     if (!employee) {
       return res.status(404).json({
         message: "Employee not found",
       });
     }
 
-    if (employee.leaveBalance < leave.days) {
-      return res.status(404).json({
+    if ((employee.leaveBalance ?? 0) < leave.days) {
+      return res.status(400).json({
         message: "Not enough leave balance",
       });
     }
