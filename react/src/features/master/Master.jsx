@@ -6,7 +6,7 @@ const Master = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <div className="flex justify-center gap-10  flex-wrap p-10 shadow-lg">
+      <div className="flex  justify-center gap-10  flex-wrap p-10 shadow-lg">
         <h2
           onClick={() => navigate("/admin/master/countries")}
           className="text-3xl font-bold hover:shadow-2xl  cursor-pointer p-10 rounded-3xl border border-gray-300 transistion-all duration-300"

@@ -16,7 +16,7 @@ const Todo = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-5">
+    <div className="flex flex-col items-center gap-5 mt-10">
       <h2 className="text-3xl font-bold">Todo List</h2>
       <div className="flex  gap-3">
         <input
