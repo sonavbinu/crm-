@@ -19,6 +19,7 @@ import ProtectedRoute from "./Components/Components/ProtectedRoute";
 import ApplyLeave from "./Components/employee/ApplyLeave";
 import LeaveRequests from "./Components/Admin/LeaveRequests";
 import MyLeaves from "./Components/employee/MyLeaves";
+import Counter from "./redux/Components/Counter";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
       {/* Public Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/counter" element={<Counter />} />
 
       {/* Admin Layout */}
       <Route
@@ -68,6 +70,8 @@ const App = () => {
 
       {/* Default Route */}
       <Route path="/" element={<Navigate to="/login" replace />} />
+
+      <Route path="/counter" element={<Navigate to="/counter" />} />
 
       {/* 404 Route */}
       <Route path="*" element={<Navigate to="/login" replace />} />
