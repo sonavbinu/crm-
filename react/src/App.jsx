@@ -22,6 +22,7 @@ import MyLeaves from "./Components/employee/MyLeaves";
 import Counter from "./redux/Components/Counter";
 import Todo from "./redux/Components/Todo";
 import User from "./redux/Components/User";
+import Redux from "./redux/Redux";
 
 const App = () => {
   return (
@@ -29,9 +30,8 @@ const App = () => {
       {/* Public Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/counter" element={<Counter />} />
-      <Route path="/todo" element={<Todo />} />
-      <Route path="/user" element={<User />} />
+
+      {/* redux  */}
 
       {/* Admin Layout */}
       <Route
@@ -51,6 +51,11 @@ const App = () => {
           <Route path="countries" element={<Country />} />
           <Route path="state" element={<State />} />
           <Route path="cities" element={<City />} />
+        </Route>
+        <Route path="redux" element={<Redux />}>
+          <Route path="counter" element={<Counter />} />
+          <Route path="todo" element={<Todo />} />
+          <Route path="user" element={<User />} />
         </Route>
       </Route>
 
@@ -74,8 +79,6 @@ const App = () => {
 
       {/* Default Route */}
       <Route path="/" element={<Navigate to="/login" replace />} />
-
-      <Route path="/counter" element={<Navigate to="/counter" />} />
 
       {/* 404 Route */}
       <Route path="*" element={<Navigate to="/login" replace />} />

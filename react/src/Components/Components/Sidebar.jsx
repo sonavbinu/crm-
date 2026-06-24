@@ -65,6 +65,11 @@ const Sidebar = () => {
                     Master
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink to="/admin/redux" className={navClass}>
+                    Redux
+                  </NavLink>
+                </li>
               </>
             )}
 
