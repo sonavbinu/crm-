@@ -23,6 +23,7 @@ import Counter from "./redux/Components/Counter";
 import Todo from "./redux/Components/Todo";
 import User from "./redux/Components/User";
 import Redux from "./redux/Redux";
+import Cart from "./redux/Components/Cart";
 
 const App = () => {
   return (
@@ -56,6 +57,7 @@ const App = () => {
           <Route path="counter" element={<Counter />} />
           <Route path="todo" element={<Todo />} />
           <Route path="user" element={<User />} />
+          <Route path="cart" element={<Cart />} />
         </Route>
       </Route>
 
