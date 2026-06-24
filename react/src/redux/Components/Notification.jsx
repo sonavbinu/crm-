@@ -47,7 +47,7 @@ const Notification = () => {
       {show && (
         <div className="border mt-5 p-2 border-gray-300 rounded-xl flex flex-col items-center ">
           <h3 className="text-2xl font-bold text-blue-500 px-2 py-1 rounded  ">
-            {type.toUpperCase()}!!!
+            {type.toUpperCase()}!
           </h3>
           <p className="font-bold">{message}</p>
         </div>
