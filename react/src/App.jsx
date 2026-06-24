@@ -20,6 +20,7 @@ import ApplyLeave from "./Components/employee/ApplyLeave";
 import LeaveRequests from "./Components/Admin/LeaveRequests";
 import MyLeaves from "./Components/employee/MyLeaves";
 import Counter from "./redux/Components/Counter";
+import Todo from "./redux/Components/Todo";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/counter" element={<Counter />} />
+      <Route path="/todo" element={<Todo />} />
 
       {/* Admin Layout */}
       <Route
