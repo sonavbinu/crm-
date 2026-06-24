@@ -25,6 +25,7 @@ import User from "./redux/Components/User";
 import Redux from "./redux/Redux";
 import Cart from "./redux/Components/Cart";
 import Notification from "./redux/Components/Notification";
+import Language from "./redux/Components/Language";
 
 const App = () => {
   return (
@@ -61,6 +62,7 @@ const App = () => {
           <Route path="cart" element={<Cart />} />
           <Route path="notification" element={<Notification />} />
         </Route>
+        <Route path="language" element={<Language />} />
       </Route>
 
       {/* Employee Layout */}

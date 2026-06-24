@@ -70,6 +70,11 @@ const Sidebar = () => {
                     Redux
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink to="/admin/language" className={navClass}>
+                    Language
+                  </NavLink>
+                </li>
               </>
             )}
 
